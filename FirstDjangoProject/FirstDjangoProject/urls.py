@@ -23,7 +23,7 @@ from smthfortest.views import *
 urlpatterns = [
 
     # path('', get_date, name='home'),
-    path('', test_index, name='home'),
+    path('', main_page, name='home'),
 
     path('hello/', include('smthfortest.urls')),
     path('admin/', admin.site.urls),

@@ -15,10 +15,10 @@ def get_date(request):
     return HttpResponse(f'Текущая дата:\n\n <h2>{str(datetime.datetime.now()).split(" ")[0]}</h2>')
 
 
-def test_index(request):
+def main_page(request):
     things_to_do = TodoList.objects.all()
     return render(request, r'smthfortest\\base_template.html',
-                  {'things': things_to_do})
+                  {'things': things_to_do, 'title': 'Incredible TITLE!'})
 
 
 def get_id(request, numberid):

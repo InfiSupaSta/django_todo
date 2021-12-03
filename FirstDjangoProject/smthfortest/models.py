@@ -11,4 +11,3 @@ class TodoList(models.Model):
     creation_time = models.DateTimeField(auto_now_add=True)
     time_updated = models.DateTimeField(auto_now=True)
     done = models.BooleanField(default=False)
-
