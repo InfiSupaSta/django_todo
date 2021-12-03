@@ -3,12 +3,19 @@ import datetime
 from django.http import HttpResponse, HttpResponseNotFound, Http404
 from django.shortcuts import render, redirect
 
-
 from smthfortest.models import TodoList
 
+menu = {'Список дел': '/thingstodo', 'О сайте': '/'}
 
-def say_hello(request):
-    return HttpResponse("Привет тебе!")
+def things_todo(request):
+    things_to_do = TodoList.objects.all()
+    return render(request, r'smthfortest\\thingstodo_page.html',
+                  {'things': things_to_do,
+                   'title': 'Incredible TITLE!',
+                   'page_color': 'white',
+                   'menu': menu
+                   }
+                  )
 
 
 def get_date(request):
@@ -16,9 +23,16 @@ def get_date(request):
 
 
 def main_page(request):
-    things_to_do = TodoList.objects.all()
+
+
+
     return render(request, r'smthfortest\\base_template.html',
-                  {'things': things_to_do, 'title': 'Incredible TITLE!'})
+                  {
+                   'title': 'Incredible TITLE!',
+                   'page_color': 'white',
+                   'menu': menu
+                   }
+                  )
 
 
 def get_id(request, numberid):

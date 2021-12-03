@@ -3,14 +3,21 @@
 <head>
     <meta charset="UTF-8">
     <title> {{ title }} </title>
+
 </head>
 
-<body>
-{% for item in things %}
-<li style="font-size:30px">
-    {{ item.description }}
-</li>
+<body style="background: {{ page_color }}">
+{% block mainmenu %}
+{% for info, url in menu.items %}
+    <li style="font-size:30px">
+        {{ info }} <a href=" {{ url }}"> тык </a>
+    </li>
 {% endfor %}
+{% endblock mainmenu %}
+
+{% block content %}
+{% endblock %}
+
 </body>
 
 </html>

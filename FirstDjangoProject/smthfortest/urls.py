@@ -5,7 +5,7 @@ from .views import *
 
 urlpatterns = [
 
-    path('', say_hello),
+    path('', things_todo),
     path('<int:numberid>/', get_id),
 
 ]

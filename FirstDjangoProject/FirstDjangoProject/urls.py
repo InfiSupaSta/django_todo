@@ -25,7 +25,7 @@ urlpatterns = [
     # path('', get_date, name='home'),
     path('', main_page, name='home'),
 
-    path('hello/', include('smthfortest.urls')),
+    path('thingstodo/', include('smthfortest.urls')),
     path('admin/', admin.site.urls),
 
 ]

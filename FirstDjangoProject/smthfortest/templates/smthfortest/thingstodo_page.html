@@ -1,0 +1,26 @@
+{% extends 'smthfortest/base_template.html' %}
+
+{% block content %}
+{% for item in things %}
+
+<p align='center' style="font-size:30px">
+    {{ item.title }}
+</p>
+<fieldset>
+
+    <p style="font-size:20px"> Description: {{ item.description }} </p>
+    <p style="font-size:20px"> Time of creation: {{ item.creation_time }} </p>
+    <p style="font-size:20px"> Is it done?
+        {% if item.done == False %}
+        <b style="color:red; font-size:20px"> NO! </b>
+        {% endif %}
+
+        {% if item.done %}
+        <b style="color:green; font-size:20px"> YES! </b>
+        {% endif %}
+    </p>
+    <button> Ничего не делающая кнопка</button>
+</fieldset>
+{% endfor %}
+
+{% endblock content %}
