@@ -4,14 +4,21 @@ from django.http import HttpResponse, HttpResponseNotFound, Http404
 from django.shortcuts import render, redirect
 
 
+from smthfortest.models import TodoList
+
+
 def say_hello(request):
     return HttpResponse("Привет тебе!")
+
 
 def get_date(request):
     return HttpResponse(f'Текущая дата:\n\n <h2>{str(datetime.datetime.now()).split(" ")[0]}</h2>')
 
+
 def test_index(request):
-    return render(request, r'smthfortest\\index.html')
+    things_to_do = TodoList.objects.all()
+    return render(request, r'smthfortest\\base_template.html',
+                  {'things': things_to_do})
 
 
 def get_id(request, numberid):
