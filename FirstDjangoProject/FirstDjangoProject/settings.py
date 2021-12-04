@@ -118,9 +118,16 @@ USE_TZ = True
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/3.2/howto/static-files/
 
+# Префикс URL адреса для статических файлов
 STATIC_URL = '/static/'
-MEDIA_ROOT = os.path.join(BASE_DIR, '/media')
+# Путь к общей статической папке, используемой веб-сервером
+STATIC_ROOT = os.path.join(BASE_DIR, '/static')
+
 MEDIA_URL = '/media/'
+MEDIA_ROOT = os.path.join(BASE_DIR, '/media')
+
+# Список нестандартных путей, использующихся для сбора и режима отладки
+STATICFILES_DIRS = []
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/3.2/ref/settings/#default-auto-field

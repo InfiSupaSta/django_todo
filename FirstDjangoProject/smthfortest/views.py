@@ -5,7 +5,7 @@ from django.shortcuts import render, redirect
 
 from smthfortest.models import TodoList
 
-menu = {'Список дел': '/thingstodo', 'О сайте': '/'}
+menu = {'Main page': '/', 'Things to do': '/thingstodo'}
 
 def things_todo(request):
     things_to_do = TodoList.objects.all()

@@ -1,3 +1,4 @@
+{% load static %}
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -9,15 +10,25 @@
 <body style="background: {{ page_color }}">
 {% block mainmenu %}
 {% for info, url in menu.items %}
-    <li style="font-size:30px">
-        {{ info }} <a href=" {{ url }}"> тык </a>
-    </li>
+<div style="font-size:40px" align="center">
+    <a href=" {{ url }}" style="text-decoration:none"> {{ info }} </a>
+</div>
 {% endfor %}
+
+<p align="center" style="font-size:30px"> Добро пожалость на тестовый Django проект, представляющий из себя TODO лист с
+    возможностью
+    создавать задачи, редактировать их и удалять/отправлять в раздел завершённых в зависимости от необходимого варианта.
+</p>
 {% endblock mainmenu %}
 
 {% block content %}
 {% endblock %}
 
+
 </body>
+
+<img src="mbut.png">
+     alt="Picture">
+
 
 </html>

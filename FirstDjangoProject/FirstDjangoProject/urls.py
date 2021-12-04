@@ -24,7 +24,6 @@ urlpatterns = [
 
     # path('', get_date, name='home'),
     path('', main_page, name='home'),
-
     path('thingstodo/', include('smthfortest.urls')),
     path('admin/', admin.site.urls),
 
@@ -33,6 +32,7 @@ urlpatterns = [
 # Данный код нужен для эмуляции РАБОЧЕГО режима(DEBUG = False) в режиме ОТЛАДКИ(DEBUG = True)
 # для статических файлов (например, графических файлов, стилей, JS-логика(???))
 if settings.DEBUG:
+
     urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
 
 # Обработчик несуществующей страницы
