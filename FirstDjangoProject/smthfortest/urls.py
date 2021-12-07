@@ -5,7 +5,8 @@ from .views import *
 
 urlpatterns = [
 
-    path('', things_todo),
-    path('<int:numberid>/', get_id),
+    path('', things_todo, name='thingstodo'),
+
+
 
 ]

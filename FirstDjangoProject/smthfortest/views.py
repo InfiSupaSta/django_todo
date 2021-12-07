@@ -5,34 +5,80 @@ from django.shortcuts import render, redirect
 
 from smthfortest.models import TodoList
 
-menu = {'Main page': '/', 'Things to do': '/thingstodo'}
+menu = {
+
+    'Main page': '/',
+    'Things to do': '/thingstodo',
+    'For tests': '/tests',
+    'Authorization': '/authorization'
+
+}
+
+
+def main_page(request):
+    context = {
+        'title': 'Incredible TITLE!',
+        'menu': menu
+    }
+    return render(request, r'smthfortest\\base_template.html',
+                  context=context
+                  )
+
 
 def things_todo(request):
     things_to_do = TodoList.objects.all()
-    return render(request, r'smthfortest\\thingstodo_page.html',
+
+    context = {
+
+        'things': things_to_do,
+        'title': 'Incredible TITLE!',
+        'page_color': 'white',
+        'menu': menu
+
+    }
+    return render(request, r'smthfortest\\thingstodo_page.html', context=context)
+
+
+def add_fixed_task(request):
+    things_to_do = TodoList.objects.all()
+    if 'Fourth' not in [item.title for item in TodoList.objects.all()]:
+        new_entry = TodoList()
+        new_entry.title = 'Fourth'
+        new_entry.description = 'Delete me'
+        new_entry.save()
+    else:
+        TodoList.objects.filter(title='Fourth').delete()
+        return render(request, r'smthfortest\\thingstodo_page.html',
+                      {'things': things_to_do,
+                       'title': 'Incredible TITLE!',
+                       'page_color': 'white',
+                       'menu': menu
+                       })
+    return TodoList.objects.all()
+
+
+def testing_page(request):
+    things_to_do = TodoList.objects.all()
+    return render(request, r'smthfortest\\for_dividing_page_test.html',
                   {'things': things_to_do,
-                   'title': 'Incredible TITLE!',
-                   'page_color': 'white',
+                   'title': 'Some tests here!',
                    'menu': menu
                    }
                   )
+
+
+def authorization_page(request):
+    context = {
+        'title': 'Authorization page!',
+        'menu': menu
+    }
+
+    return render(request, r'smthfortest\\authorization_page.html',
+                  context=context)
 
 
 def get_date(request):
     return HttpResponse(f'Текущая дата:\n\n <h2>{str(datetime.datetime.now()).split(" ")[0]}</h2>')
-
-
-def main_page(request):
-
-
-
-    return render(request, r'smthfortest\\base_template.html',
-                  {
-                   'title': 'Incredible TITLE!',
-                   'page_color': 'white',
-                   'menu': menu
-                   }
-                  )
 
 
 def get_id(request, numberid):

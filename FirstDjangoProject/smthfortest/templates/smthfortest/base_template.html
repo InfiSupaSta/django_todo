@@ -4,31 +4,34 @@
 <head>
     <meta charset="UTF-8">
     <title> {{ title }} </title>
+    <link type="text/css" href="{% static 'smthfortest/css/styles.css' %}" rel="stylesheet" />
 
 </head>
 
-<body style="background: {{ page_color }}">
-{% block mainmenu %}
-{% for info, url in menu.items %}
-<div style="font-size:40px" align="center">
-    <a href=" {{ url }}" style="text-decoration:none"> {{ info }} </a>
-</div>
-{% endfor %}
+<body>
 
-<p align="center" style="font-size:30px"> Добро пожалость на тестовый Django проект, представляющий из себя TODO лист с
+{% block mainmenu %}
+<div class="topside">
+{% for info, url in menu.items %}
+
+    <a href=" {{ url }} "  > {{ info }} </a>
+
+{% endfor %}
+</div>
+<div class="mainpage"> Добро пожаловать на тестовый Django проект, представляющий из себя TODO лист с
     возможностью
-    создавать задачи, редактировать их и удалять/отправлять в раздел завершённых в зависимости от необходимого варианта.
-</p>
+    создавать задачи, редактировать их и удалять/отправлять в архив в зависимости от необходимого варианта.
+</div>
+
 {% endblock mainmenu %}
 
 {% block content %}
 {% endblock %}
 
 
+
 </body>
 
-<img src="mbut.png">
-     alt="Picture">
-
+<div class="footer"> ВНИМАНИЕ!!! Спасибо за внимание! </div>
 
 </html>

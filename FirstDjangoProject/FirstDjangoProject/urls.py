@@ -25,8 +25,9 @@ urlpatterns = [
     # path('', get_date, name='home'),
     path('', main_page, name='home'),
     path('thingstodo/', include('smthfortest.urls')),
+    path('tests/', testing_page),
+    path('authorization/', authorization_page),
     path('admin/', admin.site.urls),
-
 ]
 
 # Данный код нужен для эмуляции РАБОЧЕГО режима(DEBUG = False) в режиме ОТЛАДКИ(DEBUG = True)
