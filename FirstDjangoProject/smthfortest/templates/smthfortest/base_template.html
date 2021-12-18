@@ -4,34 +4,56 @@
 <head>
     <meta charset="UTF-8">
     <title> {{ title }} </title>
-    <link type="text/css" href="{% static 'smthfortest/css/styles.css' %}" rel="stylesheet" />
+    <link type="text/css" href="{% static 'smthfortest/css/styles.css' %}" rel="stylesheet"/>
 
 </head>
 
 <body>
+{% csrf_token %}
+<div class="wrapper">
+    {% block mainmenu %}
+    <header class="topside">
 
-{% block mainmenu %}
-<div class="topside">
-{% for info, url in menu.items %}
+        {% for item in menu_extended %}
 
-    <a href=" {{ url }} "  > {{ info }} </a>
+        {% if title == item.title %}
 
-{% endfor %}
+        <a class="chosen">{{ item.title }}</a>
+
+        {% else %}
+
+        <a href=" {% url item.url_name %} "> {{ item.title }} </a>
+
+        {% endif %}
+
+        {% endfor %}
+
+    </header>
+    {% endblock mainmenu %}
+
+    {% block info_about %}
+    <main class="main"> Добро пожаловать на <i>тестовый</i> Django проект, представляющий из себя TODO лист с
+        возможностью создавать задачи, редактировать их и удалять после завершения.
+    {% endblock info_about %}
+
+
+        {% block content %}
+        {% endblock content %}
+    </main>
+
+    {% block success %}
+    {% endblock success %}
+
+    <footer
+
+            class="footer"><a href="{% url 'admin:index' %}">Админка</a> </br></br>
+
+        ООО "Кривые руки инкорпорейшн" </br> 2021
+
+    </footer>
 </div>
-<div class="mainpage"> Добро пожаловать на тестовый Django проект, представляющий из себя TODO лист с
-    возможностью
-    создавать задачи, редактировать их и удалять/отправлять в архив в зависимости от необходимого варианта.
-</div>
-
-{% endblock mainmenu %}
-
-{% block content %}
-{% endblock %}
-
-
 
 </body>
 
-<div class="footer"> ВНИМАНИЕ!!! Спасибо за внимание! </div>
 
 </html>

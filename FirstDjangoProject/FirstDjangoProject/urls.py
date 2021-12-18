@@ -25,15 +25,18 @@ urlpatterns = [
     # path('', get_date, name='home'),
     path('', main_page, name='home'),
     path('thingstodo/', include('smthfortest.urls')),
-    path('tests/', testing_page),
-    path('authorization/', authorization_page),
+    # path('tests/', testing_page, name='tests'),
+    # path('authorization/', authorization_page, name='authorization'),
     path('admin/', admin.site.urls),
+    path('new_task/', new_task, name='new_task'),
+    path('change_task/<int:task_pk>', change_task, name='change_task'),
+    # path('create_task_success/', create_task_success, name='create_task_success')
+    path('delete_task/<int:task_pk>', delete_task, name='delete_task')
 ]
 
 # Данный код нужен для эмуляции РАБОЧЕГО режима(DEBUG = False) в режиме ОТЛАДКИ(DEBUG = True)
 # для статических файлов (например, графических файлов, стилей, JS-логика(???))
 if settings.DEBUG:
-
     urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
 
 # Обработчик несуществующей страницы
@@ -43,5 +46,3 @@ if settings.DEBUG:
 # Handlers начинают работу ТОЛЬКО ПРИ DEBUG = False
 
 handler404 = get_page_not_found
-
-

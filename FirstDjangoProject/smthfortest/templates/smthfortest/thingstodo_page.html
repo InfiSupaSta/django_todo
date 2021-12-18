@@ -1,13 +1,19 @@
 {% extends 'smthfortest/base_template.html' %}
 
+{% block info_about %}
+
+<br>Уже запланированные задачи:
+
+{% endblock info_about %}
+
 {% block content %}
 {% for item in things %}
 
 <p class="task_name">
-    {{ item.title }}
-</p>
-
+        {{ item.title }}
+    </p>
 <div class="pagewithtasks">
+
     <p class="in_pagewithtasks"> Description: {{ item.description }} </p>
     <p class="in_pagewithtasks"> Time of creation: {{ item.creation_time }} </p>
     <p class="in_pagewithtasks"> Is it done?
@@ -19,9 +25,28 @@
         <b class="yes"> YES! </b>
         {% endif %}
     </p>
-    <button> Изменить запись  </button>
-    <button> Удалить запись </button>
-<!--    <a href="{% url 'home' %}">Главная страница</a>-->
+
+
+    {% for comment in comments %}
+
+    {% if comment.bound_title_id == item.id %}
+    <br>
+    <p class="comment">
+        <i class="comment_text">Текст комментария:</i><br>
+    <hr>
+    {{ comment.comment_text }}
+
+    </p>
+
+
+    {% endif %}
+    {% endfor %}
+
+
+    <a href='{{ item.get_absolute_url_for_change }}' class='testing'> Изменить запись </a>
+    <a href='{{ item.get_absolute_url_for_delete }}' class='testing'> Удалить задачу </a>
+    <a href='#' class='testing'> Добавить комментарий </a>
+
 
 </div>
 {% endfor %}

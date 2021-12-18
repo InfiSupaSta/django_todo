@@ -7,8 +7,9 @@ a {
     text-decoration: none;
     border: 2px dashed black;
     border-radius: 20px;
-    margin-left: 10px;
-    padding: 5px;
+    margin-left: 1%;
+    margin-bottom: 5%;
+    padding: 10px;
 }
 
 p {
@@ -20,19 +21,57 @@ p {
 b {
     font-size: 40px;
 }
+
 body {
+height: 100vh;
 background-color: #E7B3A7;
+}
+
+.main{
+flex: 0 1 auto;
+margin-top:5%;
+}
+
+.wrapper{
+min-height: 95vh;
+display: flex;
+flex-direction: column;
+}
+
+.footer{
+margin-top: auto;
+margin-bottom: 0px;
+font-size:25px;
+
+
 }
 
 .pagewithtasks {
     text-align: center;
     font-size: 30px;
     border: 3px dashed black;
-    width: 50%;
+    width: 75%;
     margin-right: auto;
     margin-left: auto;
+    margin-bottom: 20px;
     border-radius: 15px 100px 15px 100px;
     background-color: white;
+}
+
+.task_name {
+    font-size: 40papx;
+    border: 2px solid black;
+    border-bottom: none;
+    width: 50%;
+    margin-bottom: 0px;
+    padding: 8px;
+    margin-right: auto;
+    margin-left: auto;
+
+    background-color: #D0C6C3;
+    border-top-left-radius: 20px;
+    border-top-right-radius: 20px;
+    font-weight: 700;
 }
 
 .in_pagewithtasks {
@@ -40,19 +79,7 @@ background-color: #E7B3A7;
     margin-bottom: auto;
 }
 
-.task_name {
-    font-size: 40papx;
-    border: 2px solid black;
-    border-bottom: none;
-    width: 30%;
-    margin-right: auto;
-    margin-left: auto;
-    margin-bottom: auto;
-    background-color: #D0C6C3;
-    border-top-left-radius: 20px;
-    border-top-right-radius: 20px;
-    font-weight: 700;
-}
+
 
 .task {
     border: 10px double blue;
@@ -117,15 +144,51 @@ font-size:30px;
 }
 
 .topside{
-height: 20%px;
+margin-top: 3%;
 font-size: 35px;
 color: green;
+
 position: center;
 padding: 2px;
 }
 
-.footer{
-height: 10%;
-flex: 0 0 auto;
+.new_task{
+width: 35%;
+margin-left: auto;
+margin-right: auto;
+padding: 10px;
+border: 2px dashed black;
+border-radius: 25px 25px 25px 25px;
+}
 
+textarea{
+resize: none;
+}
+
+.comment{
+size: 20%;
+}
+.comment_text{
+font-size:20px;
+padding: 10px;
+}
+
+.testing {
+font-size: 30px;
+padding: 10px;
+border: none;
+}
+
+.chosen{
+color: black;
+border: 2px solid black;
+border-radius: 20px;
+
+font-weight: 600;
+
+}
+
+.widget{
+font-size: 30px;
+text-align: center;
 }

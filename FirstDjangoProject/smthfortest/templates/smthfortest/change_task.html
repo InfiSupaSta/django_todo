@@ -1,0 +1,31 @@
+{% extends 'smthfortest/base_template.html' %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>{{ title }}</title>
+</head>
+<body>
+{% block info_about %}
+<br>Вы находитесь на странице изменения существующей записи. Измените данные в форме ниже и нажмите кнопку "Сохранить".
+{% endblock info_about %}
+
+
+{% block content %}
+<form method="POST">
+    {% csrf_token %}
+
+    <br>
+    {{ form.title }}<br>
+    {{ form.description }}<br>
+    {{ form.done }}<br>
+
+    <button type="submit"> Сохранить изменения </button><br>
+
+</form>
+{% endblock content %}
+
+
+
+</body>
+</html>

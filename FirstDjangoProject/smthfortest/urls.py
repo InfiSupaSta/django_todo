@@ -7,6 +7,4 @@ urlpatterns = [
 
     path('', things_todo, name='thingstodo'),
 
-
-
 ]
