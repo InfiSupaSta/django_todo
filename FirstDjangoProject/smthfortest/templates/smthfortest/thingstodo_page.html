@@ -2,53 +2,77 @@
 
 {% block info_about %}
 
-<br>Уже запланированные задачи:
+    <br>Уже запланированные задачи:
 
 {% endblock info_about %}
 
+
+
+
 {% block content %}
-{% for item in things %}
 
-<p class="task_name">
-        {{ item.title }}
-    </p>
-<div class="pagewithtasks">
+<form action="" method="get">
+    <br>---------<br>
+    Введите количество задач, отображающихся на странице:<br>
+    {{ form.tasks_per_page }} <br>
+    <input type="submit"><br>
+    ---------<br>
 
-    <p class="in_pagewithtasks"> Description: {{ item.description }} </p>
-    <p class="in_pagewithtasks"> Time of creation: {{ item.creation_time }} </p>
-    <p class="in_pagewithtasks"> Is it done?
-        {% if item.done == False %}
-        <b class="no"> NO! </b>
+
+</form>
+Количество задач на данной странице: {{ object_list.count }}
+
+{% for item in object_list %}
+
+    <p class="task_name"> {{ item.title }} </p>
+    <div class="pagewithtasks">
+
+        <p class="in_pagewithtasks"><i>Описание</i>: {{ item.description }} </p>
+        <p class="in_pagewithtasks"><i>Время создания</i>: {{ item.creation_time }} </p>
+
+        {% if item.creation_time != item.time_updated %}
+
+            <p class="in_pagewithtasks"><i>Время изменения</i>: {{ item.time_updated }} </p>
+
         {% endif %}
 
-        {% if item.done %}
-        <b class="yes"> YES! </b>
-        {% endif %}
-    </p>
+        <p class="in_pagewithtasks done">
 
+            <i>Выполнена ли задача?</i>
 
-    {% for comment in comments %}
+            {% if item.done == False %}
+                <b class="no"> НЕТ! </b>
+            {% endif %}
 
-    {% if comment.bound_title_id == item.id %}
-    <br>
-    <p class="comment">
-        <i class="comment_text">Текст комментария:</i><br>
-    <hr>
-    {{ comment.comment_text }}
+            {% if item.done %}
+                <b class="yes"> ДА! </b>
+            {% endif %}
 
-    </p>
+        </p>
 
+        {% for key, value in lst.items %}
 
-    {% endif %}
-    {% endfor %}
+            {% if key == item.id %}
 
+                <hr class="bottom">
+                    <i>Описание задачи было изменено, прошлая версия описания:</i><br>
+                    <p class="latest"> {{ value.comment_text }} </p><br>
+                <hr class="bottom">
 
-    <a href='{{ item.get_absolute_url_for_change }}' class='testing'> Изменить запись </a>
-    <a href='{{ item.get_absolute_url_for_delete }}' class='testing'> Удалить задачу </a>
-    <a href='#' class='testing'> Добавить комментарий </a>
+            {% endif %}
 
+        {% endfor %}
 
-</div>
+        <a href='{{ item.get_absolute_url_for_change }}' class='testing'> Изменить описание </a>
+        <a href='{{ item.get_absolute_url_for_delete }}' class='testing'> Удалить задачу </a>
+
+    </div>
+
 {% endfor %}
 
+<div class="pagination">
+    {% for page_number in amount_of_tasks %}
+       <a href = '?page={{page_number}}' class="pag"> {{ page_number }} </a>
+    {% endfor %}
+</div>
 {% endblock content %}

@@ -10,6 +10,7 @@ a {
     margin-left: 1%;
     margin-bottom: 5%;
     padding: 10px;
+    text-align: center;
 }
 
 p {
@@ -76,6 +77,9 @@ font-size:25px;
 
 .in_pagewithtasks {
     font-size:30px;
+    width: 85%;
+    margin-left: auto;
+    margin-right: auto;
     margin-bottom: auto;
 }
 
@@ -92,8 +96,7 @@ font-size:25px;
 button {
     transition: 2s ease;
     background-color: yellow;
-    margin-right: 20px;
-    margin-bottom: 10px;
+    margin-bottom: 30px;
     padding-bottom:4px;
     position: right;
 }
@@ -153,7 +156,7 @@ padding: 2px;
 }
 
 .new_task{
-width: 35%;
+width: 60%;
 margin-left: auto;
 margin-right: auto;
 padding: 10px;
@@ -190,5 +193,70 @@ font-weight: 600;
 
 .widget{
 font-size: 30px;
+width: 75%;
 text-align: center;
 }
+
+.done{
+margin-bottom: 30px;
+}
+
+.checkbox{
+transform: scale(2);
+
+
+}
+.bottom{
+width: 75%;
+}
+
+.latest{
+font-family: Bradley Hand, cursive;
+margin-bottom: 0px;
+font-size:25px;
+}
+
+.pagination{
+margin-top: 20px;
+margin-bottom: 50px;
+}
+.pag{
+border: none;
+
+}
+
+
+.dropbtn {
+    background-color: #4CAF50;
+    color: white;
+    padding: 16px;
+    font-size: 16px;
+    border: none;
+}
+
+.dropdown {
+    position: relative;
+    display: inline-block;
+}
+
+.dropdown-content {
+    display: none;
+    position: absolute;
+    background-color: #f1f1f1;
+    min-width: 160px;
+    box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
+    z-index: 1;
+}
+
+.dropdown-content a {
+    color: black;
+    padding: 12px 16px;
+    text-decoration: none;
+    display: block;
+}
+
+.dropdown-content a:hover {background-color: #ddd;}
+
+.dropdown:hover .dropdown-content {display: block;}
+
+.dropdown:hover .dropbtn {background-color: #3e8e41;}

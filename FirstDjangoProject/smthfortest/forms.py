@@ -1,12 +1,11 @@
 from django import forms
 from django.views.generic import DeleteView
 
-from smthfortest.models import TodoList
-from django.forms import ModelForm, TextInput, Textarea, CheckboxInput, modelformset_factory, Select, NullBooleanSelect
+from smthfortest.models import TodoList, Comment
+from django.forms import ModelForm, TextInput, Textarea, CheckboxInput, Form
 
 
 class TodoListForm(ModelForm):
-
     class Meta:
         model = TodoList
 
@@ -30,7 +29,6 @@ class TodoListForm(ModelForm):
 
 
 class TodoListChangeForm(ModelForm):
-
     class Meta:
         model = TodoList
 
@@ -40,7 +38,6 @@ class TodoListChangeForm(ModelForm):
 
             'title': TextInput(attrs={
                 'class': 'new_task widget',
-                # 'value': TodoList.objects.get(pk=83).title
             }),
 
             'description': Textarea(attrs={
@@ -49,8 +46,30 @@ class TodoListChangeForm(ModelForm):
             }),
 
             'done': CheckboxInput(attrs={
-                'class': 'new_task'
+                'class': 'checkbox'
 
             })
 
         }
+
+class CommentReasonOfChange(ModelForm):
+    class Meta:
+
+        model = Comment
+
+        fields = ['comment_text']
+
+
+        widgets = {
+
+            'comment_text': Textarea(attrs={
+
+                'class': 'new_task widget',
+
+            })
+
+        }
+
+class TasksPerPage(Form):
+
+    tasks_per_page = forms.IntegerField()

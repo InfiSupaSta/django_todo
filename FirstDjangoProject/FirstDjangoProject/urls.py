@@ -24,7 +24,9 @@ urlpatterns = [
 
     # path('', get_date, name='home'),
     path('', main_page, name='home'),
-    path('thingstodo/', include('smthfortest.urls')),
+    # path('thingstodo/', include('smthfortest.urls'), name='thingstodo'),
+    path('thingstodo/', ThingsTodoView.as_view(), name='thingstodo'),
+    path('__debug__/', include('debug_toolbar.urls')),
     # path('tests/', testing_page, name='tests'),
     # path('authorization/', authorization_page, name='authorization'),
     path('admin/', admin.site.urls),

@@ -7,7 +7,7 @@
 </head>
 <body>
 {% block info_about %}
-<br>Вы находитесь на странице изменения существующей записи. Измените данные в форме ниже и нажмите кнопку "Сохранить".
+<br>Вы находитесь на странице изменения существующей записи. <br>Измените данные в форме ниже и нажмите кнопку "Сохранить".
 {% endblock info_about %}
 
 
@@ -18,9 +18,10 @@
     <br>
     {{ form.title }}<br>
     {{ form.description }}<br>
-    {{ form.done }}<br>
+    <p > Выполнена ли задача? {{ form.done }} </p>
+<!--    <br> {{ form_to_change_task.comment_text }}-->
 
-    <button type="submit"> Сохранить изменения </button><br>
+    <button type="submit"> Сохранить изменения </button>
 
 </form>
 {% endblock content %}
