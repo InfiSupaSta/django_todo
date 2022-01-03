@@ -52,10 +52,10 @@ class ThingsTodoView(ListView):
         context['form'] = self.form
 
         if self.paginate_by is None:
-            context['amount_of_tasks'] = [1]
+            context['amount_of_pages'] = [1]
         else:
             # using math.ceil for properly round amount of pages
-            context['amount_of_tasks'] = range(1, ceil(len(self.get_queryset()) / int(self.paginate_by)) + 1)
+            context['amount_of_pages'] = range(1, ceil(len(self.get_queryset()) / int(self.paginate_by)) + 1)
 
         context['comments'] = Comment.objects.order_by('creation_time')
 
@@ -75,6 +75,7 @@ class ThingsTodoView(ListView):
             amount = TaskOnPageAmount.objects.get(pk=1)
             amount.amount = request.GET.get('tasks_per_page')
             amount.save()
+            print(request.GET)
             return redirect('thingstodo')
 
         return super(ThingsTodoView, self).get(request, *args, **kwargs)
@@ -108,6 +109,9 @@ class ThingsTodoView(ListView):
 
 
 def new_task(request):
+
+
+
     form = TodoListForm()
 
     context = {
@@ -118,9 +122,9 @@ def new_task(request):
     }
 
     if request.method == 'POST':
-        request_form = TodoListForm(request.POST)
 
-        if request_form.is_valid():
+        request_form = TodoListForm(request.POST)
+        if request_form.is_valid() and not TodoList.objects.filter(title__exact = f'{request.POST.get("title")}'):
 
             try:
                 request_form.save()
@@ -129,6 +133,10 @@ def new_task(request):
 
             except IntegrityError as error:
                 print(error)
+                return redirect('home')
+        else:
+            print(request_form.data.get('description'))
+            return create_task_fail(request)
 
     return render(request, r'smthfortest\\new_task.html', context=context)
 
@@ -168,6 +176,7 @@ def get_page_not_found(request, exception):
     return HttpResponseNotFound(f'<h1> Page not found :c </h1> {exception}')
 
 
+
 def create_task_success(request):
     context = {
         'title': 'Задача создана!',
@@ -176,6 +185,25 @@ def create_task_success(request):
 
     return render(request,
                   r'smthfortest\\new_task_success.html',
+                  context=context
+                  )
+
+def create_task_fail(request):
+
+    data = {
+        'description': request.POST.get('description')
+        }
+
+    form = TodoListForm(initial = data)
+
+    context = {
+        'title': 'Задача с таким именем уже существует',
+        'menu_extended': menu,
+        'form': form
+    }
+
+    return render(request,
+                  r'smthfortest\\new_task_fail.html',
                   context=context
                   )
 

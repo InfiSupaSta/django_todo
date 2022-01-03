@@ -186,9 +186,7 @@ border: none;
 color: black;
 border: 2px solid black;
 border-radius: 20px;
-
 font-weight: 600;
-
 }
 
 .widget{
@@ -203,9 +201,8 @@ margin-bottom: 30px;
 
 .checkbox{
 transform: scale(2);
-
-
 }
+
 .bottom{
 width: 75%;
 }

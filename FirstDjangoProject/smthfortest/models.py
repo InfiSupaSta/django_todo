@@ -1,5 +1,4 @@
 from django.db import models
-from django.http import HttpResponseRedirect
 from django.urls import reverse
 
 
@@ -41,5 +40,8 @@ class Comment(models.Model):
 
 
 class TaskOnPageAmount(models.Model):
+
     objects = models.Manager()
+
     amount = models.PositiveIntegerField(default=1)
+

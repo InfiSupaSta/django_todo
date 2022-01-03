@@ -21,7 +21,8 @@ class TodoListForm(ModelForm):
 
             'description': Textarea(attrs={
                 'class': 'new_task',
-                'placeholder': 'Введите описание задачи здесь...'
+                'placeholder': 'Введите описание задачи здесь...',
+
 
             })
 
@@ -41,7 +42,8 @@ class TodoListChangeForm(ModelForm):
             }),
 
             'description': Textarea(attrs={
-                'class': 'new_task widget',
+                'class': 'new_task widget'
+
 
             }),
 
