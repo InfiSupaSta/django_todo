@@ -23,9 +23,13 @@ from smthfortest.views import *
 urlpatterns = [
 
     # path('', get_date, name='home'),
-    path('', main_page, name='home'),
+
+    # path('', main_page, name='home'),
+    path('', MainPage.as_view(), name='home'),
+
     # path('thingstodo/', include('smthfortest.urls'), name='thingstodo'),
     path('thingstodo/', ThingsTodoView.as_view(), name='thingstodo'),
+
     path('__debug__/', include('debug_toolbar.urls')),
     # path('tests/', testing_page, name='tests'),
     # path('authorization/', authorization_page, name='authorization'),
@@ -33,7 +37,9 @@ urlpatterns = [
     path('new_task/', new_task, name='new_task'),
     path('change_task/<int:task_pk>', change_task, name='change_task'),
     # path('create_task_success/', create_task_success, name='create_task_success')
-    path('delete_task/<int:task_pk>', delete_task, name='delete_task')
+
+    # path('delete_task/<int:task_pk>', delete_task, name='delete_task')
+    path('delete_task/<int:pk>', DeleteTask.as_view(), name='delete_task')
 ]
 
 # Данный код нужен для эмуляции РАБОЧЕГО режима(DEBUG = False) в режиме ОТЛАДКИ(DEBUG = True)

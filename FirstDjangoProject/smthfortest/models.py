@@ -21,7 +21,7 @@ class TodoList(models.Model):
         return self.title
 
     def get_absolute_url_for_delete(self):
-        return reverse('delete_task', kwargs={'task_pk': self.pk})
+        return reverse('delete_task', kwargs={'pk': self.pk})
 
     def get_absolute_url_for_change(self):
         return reverse('change_task', kwargs={'task_pk': self.pk})

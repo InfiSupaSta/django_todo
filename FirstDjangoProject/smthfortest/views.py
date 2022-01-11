@@ -1,71 +1,58 @@
 from django.core.paginator import PageNotAnInteger
 from django.db import IntegrityError
-from django.http import HttpResponse, HttpResponseNotFound, Http404, HttpResponseRedirect
+from django.http import HttpResponseNotFound
 from django.shortcuts import render, redirect
-from django.views.generic import ListView, DetailView
+from django.views.generic import ListView, DetailView, TemplateView
 
 from smthfortest.forms import TodoListForm, TodoListChangeForm, TasksPerPage
 from smthfortest.models import TodoList, Comment, TaskOnPageAmount
-from django.views.generic.edit import DeleteView
-from django.urls import reverse_lazy
-from django.db import close_old_connections
-from django.db import connection
+from .utils import DataMixin
 
 from math import ceil
-
-menu = [
-
-    {'title': 'О проекте', 'url_name': 'home'},
-    {'title': 'Список задач', 'url_name': 'thingstodo'},
-    {'title': 'Новая задача', 'url_name': 'new_task'},
-    # {'title': 'Вкладка для тестов', 'url_name': 'tests'},
-    # {'title': 'Авторизация', 'url_name': 'authorization'},
-
-]
+from .utils import menu
 
 
-def main_page(request):
-    context = {
-        'title': menu[0]['title'],
-        'menu_extended': menu
-    }
+class MainPage(DataMixin, TemplateView):
+    template_name = 'smthfortest\\base_template.html'
 
-    return render(request,
-                  r'smthfortest\\base_template.html',
-                  context=context
-                  )
+    def get_context_data(self, *, object_list=None, **kwargs):
+        context = super().get_context_data(**kwargs)
+        datamixin_context = self.get_user_context(title='О проекте')
+
+        return context | datamixin_context
 
 
-class ThingsTodoView(ListView):
+class ThingsTodoView(DataMixin, ListView):
     form = TasksPerPage
     paginate_by = 1
+
     model = TodoList
-    template_name = 'smthfortest/thingstodo_page.html'
+    template_name = 'smthfortest\\thingstodo_page.html'
 
     # if not object return 404
     allow_empty = False
 
     def get_context_data(self, *, object_list=None, **kwargs):
         context = super().get_context_data(**kwargs)
-        context['title'] = menu[1]['title']
-        context['menu_extended'] = menu
+        datamixin_context = self.get_user_context(title='Список задач')
+
         context['form'] = self.form
 
-        if self.paginate_by is None:
-            context['amount_of_pages'] = [1]
-        else:
-            # using math.ceil for properly round amount of pages
-            context['amount_of_pages'] = range(1, ceil(len(self.get_queryset()) / int(self.paginate_by)) + 1)
-
-        context['comments'] = Comment.objects.order_by('creation_time')
+        # if not self.paginate_by:
+        #     context['amount_of_pages'] = [1]
+        # else:
+        #     # using math.ceil for properly round amount of pages
+        #     context['amount_of_pages'] = range(1, ceil(len(self.get_queryset()) / int(self.paginate_by)) + 1)
+        context['amount_of_pages'] = range(1, ceil(len(self.get_queryset()) / int(self.paginate_by)) + 1)
 
         # dict for storing last version of description.
         # How to do it other way in ListView?
-        context['lst'] = {}
-        for item in context['comments']:
-            context['lst'].update({item.bound_title_id: item})
+        # maybe change default db to posrgresql or mysql and use DISTINCT ON
+        context['latest_comments'] = {}
+        for item in Comment.objects.order_by('creation_time'):
+            context['latest_comments'].update({item.bound_title_id: item})
 
-        return context
+        return context | datamixin_context
 
     def get_queryset(self, *args, **kwargs):
         return TodoList.objects.all().order_by('-creation_time')
@@ -87,44 +74,25 @@ class ThingsTodoView(ListView):
 
         # dunno what kind of exceptions can be here
         except Exception as e:
-            print(f'{e} occured, returning to main page')
             return redirect('home')
+
         return self.paginate_by
 
 
-# def things_todo(request):
-#     things_to_do = TodoList.objects.all()
-#     bounded_comments = Comment.objects.all()
-#     context = {
-#         'comments': bounded_comments,
-#         'things': things_to_do,
-#         'title': 'Список задач',
-#         'menu_extended': menu
-#
-#     }
-#
-#     return render(request, r'smthfortest\\thingstodo_page.html', context=context)
-#
-#
-
-
 def new_task(request):
-
-
-
     form = TodoListForm()
 
     context = {
 
         'title': menu[2]['title'],
         'form': form,
-        'menu_extended': menu
+        'menu': menu
     }
 
     if request.method == 'POST':
 
         request_form = TodoListForm(request.POST)
-        if request_form.is_valid() and not TodoList.objects.filter(title__exact = f'{request.POST.get("title")}'):
+        if request_form.is_valid() and not TodoList.objects.filter(title__exact=f'{request.POST.get("title")}'):
 
             try:
                 request_form.save()
@@ -132,10 +100,10 @@ def new_task(request):
                 return create_task_success(request)
 
             except IntegrityError as error:
-                print(error)
+
                 return redirect('home')
         else:
-            print(request_form.data.get('description'))
+
             return create_task_fail(request)
 
     return render(request, r'smthfortest\\new_task.html', context=context)
@@ -176,11 +144,10 @@ def get_page_not_found(request, exception):
     return HttpResponseNotFound(f'<h1> Page not found :c </h1> {exception}')
 
 
-
 def create_task_success(request):
     context = {
         'title': 'Задача создана!',
-        'menu_extended': menu
+        'menu': menu
     }
 
     return render(request,
@@ -188,17 +155,23 @@ def create_task_success(request):
                   context=context
                   )
 
+
 def create_task_fail(request):
+    """
+    Если при создании задачи используется уже существующее название,
+    пользователь получает уведомление и должен ввести другое название.
+    Информация (если она введена)  в поле 'описание задачи' сохраняется
+    """
 
     data = {
         'description': request.POST.get('description')
-        }
+    }
 
-    form = TodoListForm(initial = data)
+    form = TodoListForm(initial=data)
 
     context = {
-        'title': 'Задача с таким именем уже существует',
-        'menu_extended': menu,
+        'title': 'Новая задача',
+        'menu': menu,
         'form': form
     }
 
@@ -208,24 +181,40 @@ def create_task_fail(request):
                   )
 
 
-def delete_task(request, task_pk):
-    things_to_do = TodoList.objects.all()
-    current_task = things_to_do.get(pk=task_pk)
+class DeleteTask(DataMixin, DetailView):
+    model = TodoList
+    template_name = 'smthfortest\\delete_task.html'
 
-    context = {
-        'title': 'Удаление записи',
-        'current_task_id': task_pk,
-        'current_task': current_task,
-        'things': things_to_do,
-        'menu_extended': menu
-    }
+    def get_context_data(self, *, object_list=None, **kwargs):
+        context = super().get_context_data(**kwargs)
+        datamixin_context = self.get_user_context(title='Удаление записи')
 
-    if request.method == 'POST':
-        current_task.delete()
+        context['current_task'] = TodoList.objects.get(pk=self.kwargs['pk'])
 
+        return context | datamixin_context
+
+    def post(self, request, *args, **kwargs):
+        TodoList.objects.get(pk=self.kwargs['pk']).delete()
         return redirect('thingstodo')
 
-    return render(request, r'smthfortest\\delete_task.html', context)
+# def delete_task(request, task_pk):
+#     things_to_do = TodoList.objects.all()
+#     current_task = things_to_do.get(pk=task_pk)
+#
+#     context = {
+#         'title': 'Удаление записи',
+#         'current_task_id': task_pk,
+#         'current_task': current_task,
+#         'things': things_to_do,
+#         'menu': menu
+#     }
+#
+#     if request.method == 'POST':
+#         current_task.delete()
+#
+#         return redirect('thingstodo')
+#
+#     return render(request, r'smthfortest\\delete_task.html', context)
 
 
 def change_task(request, task_pk):
@@ -263,11 +252,9 @@ def change_task(request, task_pk):
         return redirect('thingstodo')
 
     context = {
-
         'title': 'Изменение записи',
         'form': form,
-        'menu_extended': menu
-
+        'menu': menu
     }
 
     return render(request, r'smthfortest\\change_task.html', context)

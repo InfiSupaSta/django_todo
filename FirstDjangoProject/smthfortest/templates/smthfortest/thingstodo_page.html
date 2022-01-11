@@ -17,9 +17,8 @@
     {{ form.tasks_per_page }} <br>
     <input type="submit"><br>
     ---------<br>
-
-
 </form>
+
 Количество задач на данной странице: {{ object_list.count }}
 
 {% for item in object_list %}
@@ -50,7 +49,7 @@
 
         </p>
 
-        {% for key, value in lst.items %}
+        {% for key, value in latest_comments.items %}
 
             {% if key == item.id %}
 
