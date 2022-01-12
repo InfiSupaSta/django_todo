@@ -1,10 +1,13 @@
-from django.core.paginator import PageNotAnInteger
+from django.contrib.auth import logout
+from django.contrib.auth.forms import UserCreationForm, AuthenticationForm
+from django.contrib.auth.views import LoginView
 from django.db import IntegrityError
-from django.http import HttpResponseNotFound
+from django.http import HttpResponseNotFound, HttpResponse
 from django.shortcuts import render, redirect
-from django.views.generic import ListView, DetailView, TemplateView
+from django.urls import reverse_lazy
+from django.views.generic import ListView, DetailView, TemplateView, CreateView
 
-from smthfortest.forms import TodoListForm, TodoListChangeForm, TasksPerPage
+from smthfortest.forms import TodoListForm, TodoListChangeForm, TasksPerPage, UserRegistrationForm, UserLogInForm
 from smthfortest.models import TodoList, Comment, TaskOnPageAmount
 from .utils import DataMixin
 
@@ -62,7 +65,6 @@ class ThingsTodoView(DataMixin, ListView):
             amount = TaskOnPageAmount.objects.get(pk=1)
             amount.amount = request.GET.get('tasks_per_page')
             amount.save()
-            print(request.GET)
             return redirect('thingstodo')
 
         return super(ThingsTodoView, self).get(request, *args, **kwargs)
@@ -74,7 +76,7 @@ class ThingsTodoView(DataMixin, ListView):
 
         # dunno what kind of exceptions can be here
         except Exception as e:
-            return redirect('home')
+            return redirect('home', context={'exception': e})
 
         return self.paginate_by
 
@@ -83,7 +85,6 @@ def new_task(request):
     form = TodoListForm()
 
     context = {
-
         'title': menu[2]['title'],
         'form': form,
         'menu': menu
@@ -97,26 +98,16 @@ def new_task(request):
             try:
                 request_form.save()
 
-                return create_task_success(request)
+                return TaskCreationStatus.create_task_success(request)
 
             except IntegrityError as error:
 
                 return redirect('home')
         else:
 
-            return create_task_fail(request)
+            return TaskCreationStatus.create_task_fail(request)
 
     return render(request, r'smthfortest\\new_task.html', context=context)
-
-
-# def authorization_page(request):
-#     context = {
-#         'title': 'Авторизация',
-#         'menu_extended': menu_extended
-#     }
-#
-#     return render(request, r'smthfortest\\authorization_page.html',
-#                   context=context)
 
 
 # def get_id(request, numberid):
@@ -144,41 +135,44 @@ def get_page_not_found(request, exception):
     return HttpResponseNotFound(f'<h1> Page not found :c </h1> {exception}')
 
 
-def create_task_success(request):
-    context = {
-        'title': 'Задача создана!',
-        'menu': menu
-    }
+class TaskCreationStatus:
 
-    return render(request,
-                  r'smthfortest\\new_task_success.html',
-                  context=context
-                  )
+    @staticmethod
+    def create_task_success(request):
+        context = {
+            'title': 'Задача создана!',
+            'menu': menu
+        }
 
+        return render(request,
+                      r'smthfortest\\new_task_success.html',
+                      context=context
+                      )
 
-def create_task_fail(request):
-    """
-    Если при создании задачи используется уже существующее название,
-    пользователь получает уведомление и должен ввести другое название.
-    Информация (если она введена)  в поле 'описание задачи' сохраняется
-    """
+    @staticmethod
+    def create_task_fail(request):
+        """
+        Если при создании задачи используется уже существующее название,
+        пользователь получает уведомление и должен ввести другое название.
+        Информация (если она введена)  в поле 'описание задачи' сохраняется
+        """
 
-    data = {
-        'description': request.POST.get('description')
-    }
+        data = {
+            'description': request.POST.get('description')
+        }
 
-    form = TodoListForm(initial=data)
+        form = TodoListForm(initial=data)
 
-    context = {
-        'title': 'Новая задача',
-        'menu': menu,
-        'form': form
-    }
+        context = {
+            'title': 'Новая задача',
+            'menu': menu,
+            'form': form
+        }
 
-    return render(request,
-                  r'smthfortest\\new_task_fail.html',
-                  context=context
-                  )
+        return render(request,
+                      r'smthfortest\\new_task_fail.html',
+                      context=context
+                      )
 
 
 class DeleteTask(DataMixin, DetailView):
@@ -196,6 +190,7 @@ class DeleteTask(DataMixin, DetailView):
     def post(self, request, *args, **kwargs):
         TodoList.objects.get(pk=self.kwargs['pk']).delete()
         return redirect('thingstodo')
+
 
 # def delete_task(request, task_pk):
 #     things_to_do = TodoList.objects.all()
@@ -217,19 +212,19 @@ class DeleteTask(DataMixin, DetailView):
 #     return render(request, r'smthfortest\\delete_task.html', context)
 
 
-def change_task(request, task_pk):
-    current_task = TodoList.objects.get(pk=task_pk)
+def change_task(request, pk):
+    current_task = TodoList.objects.get(pk=pk)
     form = TodoListChangeForm(instance=current_task)
 
     current_task_description = current_task.description
 
     if request.method == 'POST':
 
-        data = {
-            'title': current_task.title,
-            'description': current_task.description,
-            'done': current_task.done
-        }
+        # data = {
+        #     'title': current_task.title,
+        #     'description': current_task.description,
+        #     'done': current_task.done
+        # }
 
         request_form = TodoListChangeForm(request.POST, instance=current_task)
 
@@ -238,7 +233,7 @@ def change_task(request, task_pk):
                 request_form.save()
 
                 bound_comment = Comment()
-                bound_comment.bound_title_id = task_pk
+                bound_comment.bound_title_id = pk
                 bound_comment.comment_text = current_task_description
                 bound_comment.save()
 
@@ -258,3 +253,34 @@ def change_task(request, task_pk):
     }
 
     return render(request, r'smthfortest\\change_task.html', context)
+
+
+class UserRegistration(DataMixin, CreateView):
+    form_class = UserRegistrationForm
+    template_name = 'smthfortest\\register_user.html'
+    success_url = reverse_lazy('home')
+
+    def get_context_data(self, *, object_list=None, **kwargs):
+        context = super().get_context_data(**kwargs)
+        datamixin_context = self.get_user_context(title='Регистрация')
+
+        return context | datamixin_context
+
+
+class UserLogIn(DataMixin, LoginView):
+    form_class = AuthenticationForm
+    template_name = 'smthfortest\\login_user.html'
+    success_url = reverse_lazy('home')
+
+    def get_context_data(self, *, object_list=None, **kwargs):
+        context = super().get_context_data(**kwargs)
+        datamixin_context = self.get_user_context(title='Авторизация')
+
+        return context | datamixin_context
+
+    def get_success_url(self):
+        return reverse_lazy('home')
+
+def user_logout(request):
+    logout(request)
+    return redirect('login')

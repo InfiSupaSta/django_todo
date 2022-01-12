@@ -15,7 +15,6 @@
     <header class="topside">
 
         {% for item in menu %}
-
         {% if title == item.title %}
 
         <a class="chosen">{{ item.title }}</a>
@@ -25,8 +24,26 @@
         <a href=" {% url item.url_name %} "> {{ item.title }} </a>
 
         {% endif %}
-
         {% endfor %}
+            {% if request.user.is_authenticated %}
+
+                      <p>Привет, {{ user.username }}! <a href="{% url 'logout' %}"></a></p>
+            {% else %}
+
+                {% if title == 'Регистрация' %}
+
+                <a class="chosen"> Регистрация  </a> <a href="{% url 'login' %}"> Авторизация </a>
+
+                {% elif title == 'Авторизация' %}
+
+                <a href="{% url 'register' %}"> Регистрация </a> <a class="chosen"> Авторизация </a>
+
+                {% else %}
+
+                <a href="{% url 'register' %}" class="auth"> Регистрация  </a > <a href="{% url 'login' %}"> Авторизация </a>
+
+                {% endif %}
+        {% endif %}
 
     </header>
 

@@ -1,4 +1,6 @@
 from django import forms
+from django.contrib.auth.forms import UserCreationForm, AuthenticationForm
+from django.contrib.auth.models import User
 from django.views.generic import DeleteView
 
 from smthfortest.models import TodoList, Comment
@@ -23,7 +25,6 @@ class TodoListForm(ModelForm):
                 'class': 'new_task',
                 'placeholder': 'Введите описание задачи здесь...',
 
-
             })
 
         }
@@ -44,7 +45,6 @@ class TodoListChangeForm(ModelForm):
             'description': Textarea(attrs={
                 'class': 'new_task widget'
 
-
             }),
 
             'done': CheckboxInput(attrs={
@@ -54,13 +54,12 @@ class TodoListChangeForm(ModelForm):
 
         }
 
+
 class CommentReasonOfChange(ModelForm):
     class Meta:
-
         model = Comment
 
         fields = ['comment_text']
-
 
         widgets = {
 
@@ -72,6 +71,25 @@ class CommentReasonOfChange(ModelForm):
 
         }
 
-class TasksPerPage(Form):
 
+class TasksPerPage(Form):
     tasks_per_page = forms.IntegerField()
+
+
+class UserRegistrationForm(UserCreationForm):
+    username = forms.CharField(label='Ваш псевдоним:')
+    email = forms.EmailField(label='Адрес электронной почты:')
+    password1 = forms.CharField(label='Введите пароль:')
+    password2 = forms.CharField(label='Подтвердите пароль:')
+
+    class Meta:
+        model = User
+
+        fields = ('username', 'email', 'password1', 'password2')
+
+
+class UserLogInForm(AuthenticationForm):
+    username = forms.CharField(label='Ваш псевдоним:')
+    password1 = forms.CharField(label='Введите пароль:')
+
+

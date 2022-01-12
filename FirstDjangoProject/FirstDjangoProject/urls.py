@@ -26,16 +26,20 @@ urlpatterns = [
 
     # path('', main_page, name='home'),
     path('', MainPage.as_view(), name='home'),
-
+    path('register/', UserRegistration.as_view(), name='register'),
+    path('login/', UserLogIn.as_view(), name='login'),
+    path('logout/', user_logout, name='logout'),
     # path('thingstodo/', include('smthfortest.urls'), name='thingstodo'),
     path('thingstodo/', ThingsTodoView.as_view(), name='thingstodo'),
 
     path('__debug__/', include('debug_toolbar.urls')),
     # path('tests/', testing_page, name='tests'),
-    # path('authorization/', authorization_page, name='authorization'),
+
+    # path('authorization/', MainPage.as_view(), name='authorization'),
+
     path('admin/', admin.site.urls),
     path('new_task/', new_task, name='new_task'),
-    path('change_task/<int:task_pk>', change_task, name='change_task'),
+    path('change_task/<int:pk>', change_task, name='change_task'),
     # path('create_task_success/', create_task_success, name='create_task_success')
 
     # path('delete_task/<int:task_pk>', delete_task, name='delete_task')
