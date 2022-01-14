@@ -13,21 +13,40 @@
 <div class="wrapper">
     {% block mainmenu %}
     <header class="topside">
+        {% if not request.user.is_authenticated %}
+            {% for item in menu|slice:'1' %}
+            {% if title == 'О проекте' %}
 
-        {% for item in menu %}
-        {% if title == item.title %}
+                    <a class="chosen">{{ item.title }}</a>
 
-        <a class="chosen">{{ item.title }}</a>
+            {% else %}
 
-        {% else %}
+                    <a href=" {% url item.url_name %} "> {{ item.title }} </a>
 
-        <a href=" {% url item.url_name %} "> {{ item.title }} </a>
+            {% endif %}
+            {% endfor %}
+        {% elif request.user.is_authenticated %}
+            {% for item in menu %}
+
+                    {% if title == item.title %}
+
+                    <a class="chosen">{{ item.title }}</a>
+
+                    {% else %}
+
+                    <a href=" {% url item.url_name %} "> {{ item.title }} </a>
+
+                    {% endif %}
+
+
+            {% endfor %}
 
         {% endif %}
-        {% endfor %}
+
             {% if request.user.is_authenticated %}
 
-                      <p>Привет, {{ user.username }}! <a href="{% url 'logout' %}"></a></p>
+                      <p>Привет, {{ user.username }}! <a href="{% url 'logout' %}"> Выйти </a></p>
+
             {% else %}
 
                 {% if title == 'Регистрация' %}
@@ -43,7 +62,7 @@
                 <a href="{% url 'register' %}" class="auth"> Регистрация  </a > <a href="{% url 'login' %}"> Авторизация </a>
 
                 {% endif %}
-        {% endif %}
+            {% endif %}
 
     </header>
 
@@ -51,7 +70,8 @@
 
     {% block info_about %}
 
-        <main class="main"> Добро пожаловать на <i>тестовый</i> Django проект, представляющий из себя TODO лист.<br><br>
+        <main class="main"> Добро пожаловать на <i>тестовый</i> Django проект, представляющий из себя TODO лист.<br>
+            <strong>Для начала работы необходима авторизация!</strong><br><br>
             <i>Реализованные возможности</i>:<br>
             - создание задач (название - должно быть уникальным, описание, индикация выполнения задачи)<br>
             - редактирование описания и выполнения задачи (при изменении описания прошлая его версия будет показана в комментарии к текущей задаче)<br>

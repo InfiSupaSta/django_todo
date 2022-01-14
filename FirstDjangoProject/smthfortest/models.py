@@ -1,5 +1,6 @@
 from django.db import models
 from django.urls import reverse
+from django.contrib.auth.models import User
 
 
 class TodoList(models.Model):
@@ -28,7 +29,6 @@ class TodoList(models.Model):
 
 
 class Comment(models.Model):
-
     objects = models.Manager()
 
     bound_title = models.ForeignKey(TodoList, on_delete=models.CASCADE)
@@ -40,8 +40,6 @@ class Comment(models.Model):
 
 
 class TaskOnPageAmount(models.Model):
-
     objects = models.Manager()
 
     amount = models.PositiveIntegerField(default=1)
-

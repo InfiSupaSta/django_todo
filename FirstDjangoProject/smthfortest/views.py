@@ -1,8 +1,8 @@
 from django.contrib.auth import logout
-from django.contrib.auth.forms import UserCreationForm, AuthenticationForm
+from django.contrib.auth.forms import  AuthenticationForm
 from django.contrib.auth.views import LoginView
 from django.db import IntegrityError
-from django.http import HttpResponseNotFound, HttpResponse
+from django.http import HttpResponseNotFound
 from django.shortcuts import render, redirect
 from django.urls import reverse_lazy
 from django.views.generic import ListView, DetailView, TemplateView, CreateView
@@ -280,6 +280,7 @@ class UserLogIn(DataMixin, LoginView):
 
     def get_success_url(self):
         return reverse_lazy('home')
+
 
 def user_logout(request):
     logout(request)
