@@ -4,14 +4,14 @@ from django.contrib.auth.models import User
 from django.views.generic import DeleteView
 
 from smthfortest.models import TodoList, Comment
-from django.forms import ModelForm, TextInput, Textarea, CheckboxInput, Form
+from django.forms import ModelForm, TextInput, Textarea, CheckboxInput, Form, HiddenInput
 
 
 class TodoListForm(ModelForm):
     class Meta:
         model = TodoList
 
-        fields = 'title description done'.split(' ')
+        fields = 'title description'.split(' ')
 
         widgets = {
 
@@ -26,6 +26,8 @@ class TodoListForm(ModelForm):
                 'placeholder': 'Введите описание задачи здесь...',
 
             })
+
+            # 'bound_user': HiddenInput()
 
         }
 
@@ -50,7 +52,11 @@ class TodoListChangeForm(ModelForm):
             'done': CheckboxInput(attrs={
                 'class': 'checkbox'
 
-            })
+            }),
+
+
+
+
 
         }
 

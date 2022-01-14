@@ -11,7 +11,9 @@ class TodoList(models.Model):
     title = models.CharField(max_length=100, unique=True)
     description = models.CharField(max_length=500)
 
-    image = models.ImageField(upload_to='image/%Y/%m/%d/')
+    # image = models.ImageField(upload_to='image/%Y/%m/%d/')
+
+    bound_user = models.ForeignKey(User, default=1, on_delete=models.CASCADE)
 
     # auto_now_add declares current time at the moment of task creation
     creation_time = models.DateTimeField(auto_now_add=True)
@@ -20,6 +22,7 @@ class TodoList(models.Model):
 
     def __repr__(self):
         return self.title
+
 
     def get_absolute_url_for_delete(self):
         return reverse('delete_task', kwargs={'pk': self.pk})

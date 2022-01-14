@@ -1,5 +1,5 @@
 from django.contrib.auth import logout
-from django.contrib.auth.forms import  AuthenticationForm
+from django.contrib.auth.forms import AuthenticationForm
 from django.contrib.auth.views import LoginView
 from django.db import IntegrityError
 from django.http import HttpResponseNotFound
@@ -33,7 +33,7 @@ class ThingsTodoView(DataMixin, ListView):
     template_name = 'smthfortest\\thingstodo_page.html'
 
     # if not object return 404
-    allow_empty = False
+    # allow_empty = False
 
     def get_context_data(self, *, object_list=None, **kwargs):
         context = super().get_context_data(**kwargs)
@@ -58,7 +58,8 @@ class ThingsTodoView(DataMixin, ListView):
         return context | datamixin_context
 
     def get_queryset(self, *args, **kwargs):
-        return TodoList.objects.all().order_by('-creation_time')
+        # return TodoList.objects.all().order_by('-creation_time')
+        return TodoList.objects.filter(bound_user__id=self.request.user.id).order_by('-creation_time')
 
     def get(self, request, *args, **kwargs):
         if request.GET and request.GET.get('tasks_per_page') is not None:
@@ -98,16 +99,23 @@ def new_task(request):
             try:
                 request_form.save()
 
+                # just to hide user_id and not showing it through html form.
+                # (if it doesnt matter i can add < initial = {'bound_user': request.user.id} > in the form
+                # and a bound_user filed in bound form in forms.py)
+                current_task = TodoList.objects.get(title=request.POST.get('title'))
+                current_task.bound_user_id = request.user.id
+                current_task.save()
+
                 return TaskCreationStatus.create_task_success(request)
 
-            except IntegrityError as error:
+            except IntegrityError:
 
                 return redirect('home')
         else:
 
             return TaskCreationStatus.create_task_fail(request)
 
-    return render(request, r'smthfortest\\new_task.html', context=context)
+    return render(request, 'smthfortest\\new_task.html', context=context)
 
 
 # def get_id(request, numberid):
@@ -285,3 +293,6 @@ class UserLogIn(DataMixin, LoginView):
 def user_logout(request):
     logout(request)
     return redirect('login')
+
+# def get_user_id(request):
+#     return request.user.id
