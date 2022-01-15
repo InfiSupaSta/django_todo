@@ -36,13 +36,13 @@ class TodoListChangeForm(ModelForm):
     class Meta:
         model = TodoList
 
-        fields = 'title description done'.split(' ')
+        fields = 'description done'.split(' ')
 
         widgets = {
 
-            'title': TextInput(attrs={
-                'class': 'new_task widget',
-            }),
+            # 'title': TextInput(attrs={
+            #     'class': 'new_task widget',
+            # }),
 
             'description': Textarea(attrs={
                 'class': 'new_task widget'
@@ -85,8 +85,8 @@ class TasksPerPage(Form):
 class UserRegistrationForm(UserCreationForm):
     username = forms.CharField(label='Ваш псевдоним:')
     email = forms.EmailField(label='Адрес электронной почты:')
-    password1 = forms.CharField(label='Введите пароль:')
-    password2 = forms.CharField(label='Подтвердите пароль:')
+    password1 = forms.PasswordField()
+    password2 = forms.PasswordField()
 
     class Meta:
         model = User

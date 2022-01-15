@@ -7,7 +7,8 @@
 </head>
 <body>
 {% block info_about %}
-<br>Вы находитесь на странице изменения существующей записи. <br>Измените данные в форме ниже и нажмите кнопку "Сохранить".
+<br><i>Вы находитесь на странице изменения описания/выполнения существующей записи.
+   <br>Измените данные полей в форме ниже и нажмите кнопку "Сохранить".</i>
 {% endblock info_about %}
 
 
@@ -15,10 +16,11 @@
 <form method="POST">
     {% csrf_token %}
 
-    <br>
-    {{ form.title }}<br>
+
+<!--    {{ form.title }}<br>-->
+    <strong><p class="task_name"> {{ current_task.title }} <br></p></strong>
     {{ form.description }}<br>
-    <p > Выполнена ли задача? {{ form.done }} </p>
+    <p> Выполнена ли задача? {{ form.done }} </p>
 <!--    <br> {{ form_to_change_task.comment_text }}-->
 
     <button type="submit"> Сохранить изменения </button>

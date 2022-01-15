@@ -40,7 +40,7 @@ class ThingsTodoView(DataMixin, ListView):
         datamixin_context = self.get_user_context(title='Список задач')
 
         context['form'] = self.form
-
+        # context['time_difference'] = item.time_updated - item.time_creation
         # if not self.paginate_by:
         #     context['amount_of_pages'] = [1]
         # else:
@@ -53,6 +53,7 @@ class ThingsTodoView(DataMixin, ListView):
         # maybe change default db to posrgresql or mysql and use DISTINCT ON
         context['latest_comments'] = {}
         for item in Comment.objects.order_by('creation_time'):
+
             context['latest_comments'].update({item.bound_title_id: item})
 
         return context | datamixin_context
@@ -62,6 +63,7 @@ class ThingsTodoView(DataMixin, ListView):
         return TodoList.objects.filter(bound_user__id=self.request.user.id).order_by('-creation_time')
 
     def get(self, request, *args, **kwargs):
+
         if request.GET and request.GET.get('tasks_per_page') is not None:
             amount = TaskOnPageAmount.objects.get(pk=1)
             amount.amount = request.GET.get('tasks_per_page')
@@ -228,12 +230,6 @@ def change_task(request, pk):
 
     if request.method == 'POST':
 
-        # data = {
-        #     'title': current_task.title,
-        #     'description': current_task.description,
-        #     'done': current_task.done
-        # }
-
         request_form = TodoListChangeForm(request.POST, instance=current_task)
 
         if 'description' in request_form.changed_data:
@@ -247,7 +243,8 @@ def change_task(request, pk):
 
                 return redirect('thingstodo')
 
-        if 'title' or 'done' in request_form.changed_data:
+        # if 'title' or 'done' in request_form.changed_data:
+        if 'done' in request_form.changed_data:
             if request_form.is_valid():
                 request_form.save()
                 return redirect('thingstodo')
@@ -257,7 +254,8 @@ def change_task(request, pk):
     context = {
         'title': 'Изменение записи',
         'form': form,
-        'menu': menu
+        'menu': menu,
+        'current_task': current_task
     }
 
     return render(request, r'smthfortest\\change_task.html', context)
@@ -266,7 +264,7 @@ def change_task(request, pk):
 class UserRegistration(DataMixin, CreateView):
     form_class = UserRegistrationForm
     template_name = 'smthfortest\\register_user.html'
-    success_url = reverse_lazy('home')
+    success_url = reverse_lazy('login')
 
     def get_context_data(self, *, object_list=None, **kwargs):
         context = super().get_context_data(**kwargs)
@@ -293,6 +291,3 @@ class UserLogIn(DataMixin, LoginView):
 def user_logout(request):
     logout(request)
     return redirect('login')
-
-# def get_user_id(request):
-#     return request.user.id
