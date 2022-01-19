@@ -11,7 +11,7 @@ class TodoListForm(ModelForm):
     class Meta:
         model = TodoList
 
-        fields = 'title description'.split(' ')
+        fields = 'title description bound_user'.split(' ')
 
         widgets = {
 
@@ -25,9 +25,9 @@ class TodoListForm(ModelForm):
                 'class': 'new_task',
                 'placeholder': 'Введите описание задачи здесь...',
 
-            })
+            }),
 
-            # 'bound_user': HiddenInput()
+            'bound_user': HiddenInput()
 
         }
 
@@ -83,8 +83,8 @@ class TasksPerPage(Form):
 
 
 class UserRegistrationForm(UserCreationForm):
-    username = forms.CharField(label='Ваш псевдоним:')
-    email = forms.EmailField(label='Адрес электронной почты:')
+    username = forms.CharField(label='Ваш псевдоним')
+    email = forms.EmailField(label='Адрес электронной почты')
     password1 = forms.PasswordField()
     password2 = forms.PasswordField()
 

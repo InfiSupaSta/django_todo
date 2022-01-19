@@ -40,6 +40,10 @@ class ThingsTodoView(DataMixin, ListView):
         datamixin_context = self.get_user_context(title='Список задач')
 
         context['form'] = self.form
+        context['paginate_by'] = self.paginate_by
+        context['amount_of_tasks_created_by_user'] = len(self.get_queryset())
+        context['tasks_done'] = len(TodoList.objects.filter(bound_user__id=self.request.user.id, done=1))
+
         # context['time_difference'] = item.time_updated - item.time_creation
         # if not self.paginate_by:
         #     context['amount_of_pages'] = [1]
@@ -53,7 +57,6 @@ class ThingsTodoView(DataMixin, ListView):
         # maybe change default db to posrgresql or mysql and use DISTINCT ON
         context['latest_comments'] = {}
         for item in Comment.objects.order_by('creation_time'):
-
             context['latest_comments'].update({item.bound_title_id: item})
 
         return context | datamixin_context
@@ -65,7 +68,7 @@ class ThingsTodoView(DataMixin, ListView):
     def get(self, request, *args, **kwargs):
 
         if request.GET and request.GET.get('tasks_per_page') is not None:
-            amount = TaskOnPageAmount.objects.get(pk=1)
+            amount = TaskOnPageAmount.objects.get(task_on_page_bound_user_id=self.request.user.id)
             amount.amount = request.GET.get('tasks_per_page')
             amount.save()
             return redirect('thingstodo')
@@ -74,18 +77,28 @@ class ThingsTodoView(DataMixin, ListView):
 
     def get_paginate_by(self, queryset):
 
-        try:
-            self.paginate_by = TaskOnPageAmount.objects.get(pk=1).amount
+        if len(TaskOnPageAmount.objects.filter(task_on_page_bound_user_id=self.request.user.id)) == 0:
+            new_user_amount_of_tasks = TaskOnPageAmount(task_on_page_bound_user_id=self.request.user.id)
+            new_user_amount_of_tasks.save()
+
+        # with suppress(IntegrityError):
+        #     new_user_amount_of_tasks = TaskOnPageAmount(task_on_page_bound_user_id=self.request.user.id)
+        #     new_user_amount_of_tasks.save()
+
+        # try:
+        #     # task_on_page_bound_user_id=self.request.user.id
+        #     self.paginate_by = TaskOnPageAmount.objects.get(task_on_page_bound_user_id=self.request.user.id).amount
+        self.paginate_by = TaskOnPageAmount.objects.get(task_on_page_bound_user_id=self.request.user.id).amount
 
         # dunno what kind of exceptions can be here
-        except Exception as e:
-            return redirect('home', context={'exception': e})
+        # except Exception as e:
+        #     return redirect('home', context={'exception': e})
 
         return self.paginate_by
 
 
 def new_task(request):
-    form = TodoListForm()
+    form = TodoListForm(initial={'bound_user': request.user.id})
 
     context = {
         'title': menu[2]['title'],
@@ -96,7 +109,8 @@ def new_task(request):
     if request.method == 'POST':
 
         request_form = TodoListForm(request.POST)
-        if request_form.is_valid() and not TodoList.objects.filter(title__exact=f'{request.POST.get("title")}'):
+        if request_form.is_valid() and not TodoList.objects.filter(title__exact=f'{request.POST.get("title")}',
+                                                                   bound_user=request.user.id):
 
             try:
                 request_form.save()
@@ -104,9 +118,9 @@ def new_task(request):
                 # just to hide user_id and not showing it through html form.
                 # (if it doesnt matter i can add < initial = {'bound_user': request.user.id} > in the form
                 # and a bound_user filed in bound form in forms.py)
-                current_task = TodoList.objects.get(title=request.POST.get('title'))
-                current_task.bound_user_id = request.user.id
-                current_task.save()
+                # current_task = TodoList.objects.get(title__exact=request.POST.get('title'))
+                # current_task.bound_user_id = request.user.id
+                # current_task.save()
 
                 return TaskCreationStatus.create_task_success(request)
 

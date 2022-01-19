@@ -1,22 +1,21 @@
 {% extends 'smthfortest/base_template.html' %}
 
 {% block info_about %}
-
-    <br>Уже запланированные задачи:
+<form method="get" class = "paginate_by">
+    <strong> <br>---------<br></strong>
+    Создано задач: <strong>{{amount_of_tasks_created_by_user}}</strong>.
+    Выполнено задач: <strong>{{tasks_done}}</strong>.
+    Количество отображаемых задач на странице: <strong>{{ paginate_by }}</strong>.<br>
+    Для изменения количества задач на странице введите новое значение и сохраните. {{ form.tasks_per_page }}
+    <input type="submit" value="Сохранить"><br>
+    <strong> ---------<br></strong>
+</form>
+<p class="current">Уже запланированные задачи:</p>
 
 {% endblock info_about %}
 
 {% block content %}
 
-<form action="" method="get">
-    <br>---------<br>
-    Введите количество задач, отображающихся на странице:<br>
-    {{ form.tasks_per_page }} <br>
-    <input type="submit"><br>
-    ---------<br>
-</form>
-
-Количество задач на данной странице: {{ object_list.count }}
 
 {% for item in object_list %}
 
@@ -30,15 +29,15 @@
 
     <div class="pagewithtasks">
 
-        <p class="in_pagewithtasks"><i>Описание</i>: {{ item.description }} </p>
-        <p class="in_pagewithtasks"><i>Время создания</i>: {{ item.creation_time }} </p>
+        <p class="in_pagewithtasks"><i>Описание</i>: <strong>{{ item.description }}</strong> </p>
+        <p class="in_pagewithtasks"><i>Время создания</i>: {{ item.creation_time }}
 
-        {% if item.creation_time|timeuntil:item.time_updated != 0 %}
+        {% if item.creation_time != item.time_updated %}
 
-            <p class="in_pagewithtasks"><i>Время изменения</i>: {{ item.time_updated }} </p>
+            <br><i>Время изменения</i>: {{ item.time_updated }}
 
         {% endif %}
-
+        </p>
         <p class="in_pagewithtasks done">
 
             <i>Выполнена ли задача?</i>
@@ -59,8 +58,8 @@
 
             {% if key == item.id %}
                 <hr class="bottom">
-                    <i>Описание задачи было изменено, прошлая версия описания:</i><br>
-                    <p class="latest"> {{ value.comment_text }} </p><br>
+                    <i>Описание задачи было изменено, прошлая версия описания:</i>
+                    <p class="latest"> "{{ value.comment_text }}" </p>
                 <hr class="bottom">
 
             {% endif %}
@@ -76,8 +75,10 @@
 
 <div class="pagination">
     {% for page_number in amount_of_pages %}
+        {% if amount_of_pages|length == 1 %}
+        {% else %}
        <a href = '?page={{page_number}}' class="pag"> {{ page_number }} </a>
-
+        {% endif %}
     {% endfor %}
 </div>
 {% endblock content %}

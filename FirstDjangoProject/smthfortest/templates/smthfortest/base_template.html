@@ -7,12 +7,17 @@
     <link type="text/css" href="{% static 'smthfortest/css/styles.css' %}" rel="stylesheet"/>
 
 </head>
-
+{% if request.user.is_authenticated %}
+<p class="hello">В данный момент вы находитесь на аккаунте пользователя {{ user.username }}!</p>
+        {% endif %}
 <body>
-{% csrf_token %}
+
 <div class="wrapper">
+
+    <div class="content">
+        <br>
     {% block mainmenu %}
-    <header class="topside">
+
         {% if not request.user.is_authenticated %}
             {% for item in menu|slice:'1' %}
             {% if title == 'О проекте' %}
@@ -21,11 +26,13 @@
 
             {% else %}
 
-                    <a href=" {% url item.url_name %} "> {{ item.title }} </a>
+                    <a href=" {% url item.url_name %} " >{{ item.title }}</a>
 
             {% endif %}
             {% endfor %}
+
         {% elif request.user.is_authenticated %}
+
             {% for item in menu %}
 
                     {% if title == item.title %}
@@ -34,10 +41,9 @@
 
                     {% else %}
 
-                    <a href=" {% url item.url_name %} "> {{ item.title }} </a>
+                    <a href=" {% url item.url_name %} " class="not_chosen"> {{ item.title }} </a>
 
                     {% endif %}
-
 
             {% endfor %}
 
@@ -45,37 +51,39 @@
 
             {% if request.user.is_authenticated %}
 
-                      <p>Привет, {{ user.username }}! <a href="{% url 'logout' %}"> Выйти </a></p>
+        <a href="{% url 'logout' %}" class="not_chosen"> Выйти </a>
 
             {% else %}
 
                 {% if title == 'Регистрация' %}
 
-                <a class="chosen"> Регистрация  </a> <a href="{% url 'login' %}"> Авторизация </a>
+                <a class="chosen">Регистрация</a><a href="{% url 'login' %}">Авторизация</a>
 
                 {% elif title == 'Авторизация' %}
 
-                <a href="{% url 'register' %}"> Регистрация </a> <a class="chosen"> Авторизация </a>
+                <a href="{% url 'register' %}">Регистрация</a> <a class="chosen">Авторизация</a>
 
                 {% else %}
 
-                <a href="{% url 'register' %}" class="auth"> Регистрация  </a > <a href="{% url 'login' %}"> Авторизация </a>
+                <a href="{% url 'register' %}" >Регистрация</a> <a href="{% url 'login' %}">Авторизация</a>
 
                 {% endif %}
+
             {% endif %}
 
-    </header>
+
 
     {% endblock mainmenu %}
 
     {% block info_about %}
-
-        <main class="main"> Добро пожаловать на <i>тестовый</i> Django проект, представляющий из себя TODO лист.<br>
-            <strong>Для начала работы необходима авторизация!</strong><br><br>
+        <br><br>
+        <p class="maininfo">Добро пожаловать на <i>тестовый</i> Django проект, представляющий из себя TODO лист.<br>
+            <strong>Для начала работы необходима авторизация!</strong><br></p>
             <i>Реализованные возможности</i>:<br>
-            - создание задач (название - должно быть уникальным, описание, индикация выполнения задачи)<br>
+            <p class="opportunities">- создание задач (название - должно быть уникальным, описание, индикация выполнения задачи)<br>
             - редактирование описания и выполнения задачи (при изменении описания прошлая его версия будет показана в комментарии к текущей задаче)<br>
-            - пагинация (по умолчанию отображается 1 задача на странице, но пользователем вручную может быть указано количество задач на странице)
+            - пагинация (по умолчанию отображается 1 задача на странице, но пользователем вручную может быть указано количество задач на странице)<br>
+                - регистрация и авторизация</p>
 
 
     {% endblock info_about %}
@@ -85,18 +93,19 @@
 
     {% block content %}
     {% endblock content %}
-    </main>
+
 
     {% block success %}
     {% endblock success %}
 
-    <footer
+    </div>
 
-            class="footer"><a href="{% url 'admin:index' %}">Админка</a> </br></br>
+    <div class="footer"><a href="{% url 'admin:index' %}">Админка</a> </br></br>
 
-        ООО "Кривые руки инкорпорейшн" </br> 2021
+        Проект создан в учебных целях. Контактный email: infiwow777@yandex.ru
 
-    </footer>
+    </div>
+
 </div>
 
 </body>

@@ -8,7 +8,7 @@ class TodoList(models.Model):
     # and adding IDE autofill in community PyCharm version
     objects = models.Manager()
 
-    title = models.CharField(max_length=100, unique=True)
+    title = models.CharField(max_length=100)
     description = models.CharField(max_length=500)
 
     bound_user = models.ForeignKey(User, default=1, on_delete=models.CASCADE)
@@ -43,3 +43,4 @@ class TaskOnPageAmount(models.Model):
     objects = models.Manager()
 
     amount = models.PositiveIntegerField(default=1)
+    task_on_page_bound_user = models.ForeignKey(User, default=1, on_delete=models.CASCADE, unique=True)

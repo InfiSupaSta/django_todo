@@ -26,42 +26,67 @@ b {
 body {
 height: 100vh;
 background-color: #E7B3A7;
+margin: 0;
 }
 
-.main{
-flex: 0 1 auto;
+.maininfo{
+width: 80%;
 margin-top:5%;
-margin-bottom: 40px;
+margin-bottom: 20px;
+margin-left: auto;
+margin-right: auto;
 }
+.opportunities{
+width: 90%;
+font-size: 28px;
+margin-left: auto;
+margin-right: auto;
 
+}
 .wrapper{
-min-height: 95vh;
 display: flex;
 flex-direction: column;
+height: 93vh;
 }
-
+.content{
+flex: 1 0 auto;
+}
 .footer{
-margin-top: auto;
-margin-bottom: 0px;
+flex: 0 0 auto;
+
+
+
 font-size:25px;
-
-
 }
 
+
+
+.topside{
+flex: 1 0 auto;
+margin-top: 3%;
+font-size: 35px;
+position: center;
+padding: 2px;
+}
+
+.html{
+height: 100%;
+}
 .pagewithtasks {
     text-align: center;
     font-size: 30px;
-    border: 3px dashed black;
+    border: 3px dashed #100000;
     width: 75%;
     margin-right: auto;
     margin-left: auto;
     margin-bottom: 20px;
     border-radius: 15px 100px 15px 100px;
     background-color: white;
+    padding-bottom: 20px;
 }
 
 .task_name {
-    font-size: 40papx;
+    font-size: 40px;
     border: 2px solid black;
     border-bottom: none;
     width: 50%;
@@ -81,7 +106,8 @@ font-size:25px;
     width: 85%;
     margin-left: auto;
     margin-right: auto;
-    margin-bottom: auto;
+    margin-bottom: 30px;
+
 }
 
 
@@ -96,7 +122,7 @@ font-size:25px;
 
 button {
     transition: 2s ease;
-    background-color: yellow;
+    background-color: #98ff98;
     margin-bottom: 30px;
     padding-bottom:4px;
     position: right;
@@ -147,14 +173,7 @@ font-size:30px;
   margin-bottom: 15px;
 }
 
-.topside{
-margin-top: 3%;
-font-size: 35px;
-color: green;
 
-position: center;
-padding: 2px;
-}
 
 .new_task{
 width: 60%;
@@ -172,6 +191,7 @@ resize: none;
 .comment{
 size: 20%;
 }
+
 .comment_text{
 font-size:20px;
 padding: 10px;
@@ -183,12 +203,7 @@ padding: 10px;
 border: none;
 }
 
-.chosen{
-color: black;
-border: 2px solid black;
-border-radius: 20px;
-font-weight: 600;
-}
+
 
 .widget{
 font-size: 30px;
@@ -211,6 +226,7 @@ width: 75%;
 .latest{
 font-family: Bradley Hand, cursive;
 margin-bottom: 0px;
+margin-top: 5px;
 font-size:25px;
 }
 
@@ -225,8 +241,8 @@ border: none;
 
 
 .auth{
-margin-left-auto;
-margin-right: 10px;
+margin-left:auto;
+
 }
 
 .form-field-error ul{
@@ -237,8 +253,9 @@ list-style:none;
 
 .registration-form{
 width: 50%;
-margin-left: auto;
-margin-right: auto;
+position: fixed;
+left: 25%;
+
 }
 .form-label{
 clear: both;
@@ -252,4 +269,41 @@ padding-right:10px;
 }
 .form-wrapper{
 float: left;
+}
+
+
+.hello{
+margin: auto;
+font-family: Bradley Hand, cursive;
+font-size: 30px;
+}
+
+.paginate_by{
+font-size: 20px;
+}
+.w80{
+width:80%;
+margin-left: auto;
+margin-right: auto;
+}
+.chosen{
+color: black;
+border: 2px solid black;
+border-radius: 20px;
+font-weight: 600;
+font-size: 28px;
+font-family: Bradley Hand, cursive;
+}
+.not_chosen{
+font-size: 30px;
+font-weight: 400;
+font-family: Bradley Hand, cursive;
+
+}
+.current{
+margin-top: 10px;
+font-family: Bradley Hand, cursive;
+margin-bottom:0px;
+
+
 }
