@@ -43,26 +43,26 @@ class AuthenticationTest(TestCase):
         self.assertEqual(response.status_code, 302)
 
     def test_invalid_registration_form(self):
-        valid_initial = {
+        invalid_initial = {
             'username': 'Petruccio',
             'email': '',
             'password1': 'ghb123dtn',
             'password2': 'ghb123dtn'
         }
 
-        response = self.client.post('/register/', valid_initial)
+        response = self.client.post('/register/', invalid_initial)
 
         self.assertFormError(response, 'form', 'email', 'Обязательное поле.')
 
     def test_different_passwords_in_registration_form(self):
-        valid_initial = {
+        invalid_initial = {
             'username': 'Petruccio',
             'email': 'mail@mail.lmao',
             'password1': 'ghb123dtn',
             'password2': 'different'
         }
 
-        response = self.client.post('/register/', valid_initial)
+        response = self.client.post('/register/', invalid_initial)
 
         self.assertFormError(response, 'form', 'password2', 'Введенные пароли не совпадают.')
 
