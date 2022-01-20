@@ -43,4 +43,4 @@ class TaskOnPageAmount(models.Model):
     objects = models.Manager()
 
     amount = models.PositiveIntegerField(default=1)
-    task_on_page_bound_user = models.ForeignKey(User, default=1, on_delete=models.CASCADE, unique=True)
+    task_on_page_bound_user = models.OneToOneField(User, default=1, on_delete=models.CASCADE)

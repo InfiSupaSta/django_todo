@@ -32,6 +32,8 @@ class ThingsTodoView(DataMixin, ListView):
     model = TodoList
     template_name = 'smthfortest\\thingstodo_page.html'
 
+    queryset_len = None
+
     # if not object return 404
     # allow_empty = False
 
@@ -41,7 +43,7 @@ class ThingsTodoView(DataMixin, ListView):
 
         context['form'] = self.form
         context['paginate_by'] = self.paginate_by
-        context['amount_of_tasks_created_by_user'] = len(self.get_queryset())
+        context['amount_of_tasks_created_by_user'] = self.queryset_len
         context['tasks_done'] = len(TodoList.objects.filter(bound_user__id=self.request.user.id, done=1))
 
         # context['time_difference'] = item.time_updated - item.time_creation
@@ -50,7 +52,7 @@ class ThingsTodoView(DataMixin, ListView):
         # else:
         #     # using math.ceil for properly round amount of pages
         #     context['amount_of_pages'] = range(1, ceil(len(self.get_queryset()) / int(self.paginate_by)) + 1)
-        context['amount_of_pages'] = range(1, ceil(len(self.get_queryset()) / int(self.paginate_by)) + 1)
+        context['amount_of_pages'] = range(1, int(ceil(self.queryset_len) / int(self.paginate_by)) + 1)
 
         # dict for storing last version of description.
         # How to do it other way in ListView?
@@ -62,8 +64,9 @@ class ThingsTodoView(DataMixin, ListView):
         return context | datamixin_context
 
     def get_queryset(self, *args, **kwargs):
-        # return TodoList.objects.all().order_by('-creation_time')
-        return TodoList.objects.filter(bound_user__id=self.request.user.id).order_by('-creation_time')
+        queryset = TodoList.objects.filter(bound_user__id=self.request.user.id).order_by('-creation_time')
+        self.queryset_len = len(queryset)
+        return queryset
 
     def get(self, request, *args, **kwargs):
 
