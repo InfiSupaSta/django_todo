@@ -46,12 +46,6 @@ class ThingsTodoView(DataMixin, ListView):
         context['amount_of_tasks_created_by_user'] = self.queryset_len
         context['tasks_done'] = len(TodoList.objects.filter(bound_user__id=self.request.user.id, done=1))
 
-        # context['time_difference'] = item.time_updated - item.time_creation
-        # if not self.paginate_by:
-        #     context['amount_of_pages'] = [1]
-        # else:
-        #     # using math.ceil for properly round amount of pages
-        #     context['amount_of_pages'] = range(1, ceil(len(self.get_queryset()) / int(self.paginate_by)) + 1)
         context['amount_of_pages'] = range(1, int(ceil(self.queryset_len) / int(self.paginate_by)) + 1)
 
         # dict for storing last version of description.
@@ -84,13 +78,7 @@ class ThingsTodoView(DataMixin, ListView):
             new_user_amount_of_tasks = TaskOnPageAmount(task_on_page_bound_user_id=self.request.user.id)
             new_user_amount_of_tasks.save()
 
-        # with suppress(IntegrityError):
-        #     new_user_amount_of_tasks = TaskOnPageAmount(task_on_page_bound_user_id=self.request.user.id)
-        #     new_user_amount_of_tasks.save()
-
         # try:
-        #     # task_on_page_bound_user_id=self.request.user.id
-        #     self.paginate_by = TaskOnPageAmount.objects.get(task_on_page_bound_user_id=self.request.user.id).amount
         self.paginate_by = TaskOnPageAmount.objects.get(task_on_page_bound_user_id=self.request.user.id).amount
 
         # dunno what kind of exceptions can be here
@@ -116,15 +104,8 @@ def new_task(request):
                                                                    bound_user=request.user.id):
 
             try:
+
                 request_form.save()
-
-                # just to hide user_id and not showing it through html form.
-                # (if it doesnt matter i can add < initial = {'bound_user': request.user.id} > in the form
-                # and a bound_user filed in bound form in forms.py)
-                # current_task = TodoList.objects.get(title__exact=request.POST.get('title'))
-                # current_task.bound_user_id = request.user.id
-                # current_task.save()
-
                 return TaskCreationStatus.create_task_success(request)
 
             except IntegrityError:
@@ -135,27 +116,6 @@ def new_task(request):
             return TaskCreationStatus.create_task_fail(request)
 
     return render(request, 'smthfortest\\new_task.html', context=context)
-
-
-# def get_id(request, numberid):
-#     # Если при входе на страницу существует GET запрос (выглядит как /?something=else&
-#     # где something - ключ, else - значение, & - знак разделителя,
-#     # то выполняется следующая логика
-#     if request.GET:
-#         print(request.GET)
-#     else:
-#         print('No requests')
-#
-#     # Ограчение на количество страниц
-#     if numberid > 10:
-#         # Возбуждается ошибка 404, при этом предпринимаются действия из функции, указанной в handler404 (если таковой
-#         # создан) из файла root/urls.py
-#         # raise Http404()
-#
-#         # Вызывается метод redirrect 302 для перенаправления на указанный url при несоответствии условию.
-#         # указав аргумент permanent = True выполнится 301 redirrect
-#         return redirect('home', permanent=True)
-#     return HttpResponse(f'<h2>ID of this page is:</h2>\n\n <h3> {numberid} </h3>')
 
 
 def get_page_not_found(request, exception):
@@ -217,26 +177,6 @@ class DeleteTask(DataMixin, DetailView):
     def post(self, request, *args, **kwargs):
         TodoList.objects.get(pk=self.kwargs['pk']).delete()
         return redirect('thingstodo')
-
-
-# def delete_task(request, task_pk):
-#     things_to_do = TodoList.objects.all()
-#     current_task = things_to_do.get(pk=task_pk)
-#
-#     context = {
-#         'title': 'Удаление записи',
-#         'current_task_id': task_pk,
-#         'current_task': current_task,
-#         'things': things_to_do,
-#         'menu': menu
-#     }
-#
-#     if request.method == 'POST':
-#         current_task.delete()
-#
-#         return redirect('thingstodo')
-#
-#     return render(request, r'smthfortest\\delete_task.html', context)
 
 
 def change_task(request, pk):
