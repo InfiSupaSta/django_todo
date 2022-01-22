@@ -10,7 +10,6 @@ class AuthenticationTest(TestCase):
     def auth():
         user = User.objects.create(username='username')
         user.set_password('password')
-
         user.save()
 
         return {'username': 'username', 'password': 'password'}

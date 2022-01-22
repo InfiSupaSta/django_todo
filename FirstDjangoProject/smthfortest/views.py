@@ -1,3 +1,4 @@
+from math import ceil
 from django.contrib.auth import logout
 from django.contrib.auth.forms import AuthenticationForm
 from django.contrib.auth.views import LoginView
@@ -10,8 +11,6 @@ from django.views.generic import ListView, DetailView, TemplateView, CreateView
 from smthfortest.forms import TodoListForm, TodoListChangeForm, TasksPerPage, UserRegistrationForm, UserLogInForm
 from smthfortest.models import TodoList, Comment, TaskOnPageAmount
 from .utils import DataMixin
-
-from math import ceil
 from .utils import menu
 
 
