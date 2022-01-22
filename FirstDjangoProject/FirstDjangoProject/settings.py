@@ -20,8 +20,6 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 
 # SECURITY WARNING: keep the secret key used in production secret!
 try:
-    import local_settings
-
     SECRET_KEY = local_settings.SECRET_KEY
 except (NameError, AttributeError):
     SECRET_KEY = 'Something secret here! Tss...'

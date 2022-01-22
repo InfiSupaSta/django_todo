@@ -1,17 +1,16 @@
 from django import forms
 from django.contrib.auth.forms import UserCreationForm, AuthenticationForm
 from django.contrib.auth.models import User
-from django.views.generic import DeleteView
+from django.forms import ModelForm, TextInput, Textarea, CheckboxInput, Form, HiddenInput
 
 from smthfortest.models import TodoList, Comment
-from django.forms import ModelForm, TextInput, Textarea, CheckboxInput, Form, HiddenInput
 
 
 class TodoListForm(ModelForm):
     class Meta:
         model = TodoList
 
-        fields = 'title description bound_user'.split(' ')
+        fields = ('title', 'description', 'bound_user')
 
         widgets = {
 
@@ -40,10 +39,6 @@ class TodoListChangeForm(ModelForm):
 
         widgets = {
 
-            # 'title': TextInput(attrs={
-            #     'class': 'new_task widget',
-            # }),
-
             'description': Textarea(attrs={
                 'class': 'new_task widget'
 
@@ -53,10 +48,6 @@ class TodoListChangeForm(ModelForm):
                 'class': 'checkbox'
 
             }),
-
-
-
-
 
         }
 
@@ -85,8 +76,8 @@ class TasksPerPage(Form):
 class UserRegistrationForm(UserCreationForm):
     username = forms.CharField(label='Ваш псевдоним')
     email = forms.EmailField(label='Адрес электронной почты')
-    password1 = forms.PasswordField()
-    password2 = forms.PasswordField()
+    password1 = forms.CharField(widget=forms.PasswordInput(), label='Пароль')
+    password2 = forms.CharField(widget=forms.PasswordInput(), label='Повторите пароль')
 
     class Meta:
         model = User
@@ -97,5 +88,3 @@ class UserRegistrationForm(UserCreationForm):
 class UserLogInForm(AuthenticationForm):
     username = forms.CharField(label='Ваш псевдоним:')
     password1 = forms.CharField(label='Введите пароль:')
-
-
