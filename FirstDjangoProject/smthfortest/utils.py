@@ -1,4 +1,4 @@
-from .models import TodoList, Comment
+from .models import TodoList
 
 menu = [
 
