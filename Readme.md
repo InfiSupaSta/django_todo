@@ -13,11 +13,9 @@ How to start(on the PyCharm IDE example):
 
 2) Create a venv via settings
 
-3) Install requirements (if it not installed automatically use 
+3) Install requirements (if it not installed automatically use in terminal
 
 > pip install requirements.txt
-
-in terminal
 
 4) Just in case set ./FirstDjangoProject as a root folder
 
@@ -31,3 +29,4 @@ To run application use
 
 > cd ./FirstDjangoProject
 > python manage.py runserver
+# что-то
