@@ -1,7 +1,7 @@
 Small Django project for educational purposes.
 
 1. [Implemented things](#Implemented-things)
-2. [How to start](#How-to-start(on-the-PyCharm-IDE-example)
+2. [How to start](#How-to-start-(on-the-PyCharm-IDE-example)
 3. [How to use](#How-to-use)
 
 
