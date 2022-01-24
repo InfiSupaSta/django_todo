@@ -1,4 +1,7 @@
-Small Django project for educational purposes.
+      Small Django project for educational purposes.
+
+
+____
 
 1. [Implemented things](#Implemented-things)
 2. [How to start](#How-to-start-on-the-PyCharm-IDE-example)
