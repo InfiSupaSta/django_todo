@@ -1,5 +1,10 @@
 Small Django project for educational purposes.
 
+1. [Implemented things](#Implemented-things)
+2. [How to start](#How-to-start)
+3. [How to use](#How-to-use)
+
+
 # Implemented things:
 - task creating(title, description), editing(description - after change previous version of description is moving to the comment section under the task, progress indication - small checkbox for done/not done condition)
 - pagination for tasks per page - user can personally select how much
