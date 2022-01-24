@@ -1,11 +1,11 @@
 Small Django project for educational purposes.
 
-Implemented things:
+# Implemented things:
 - task creating(title, description), editing(description - after change previous version of description is moving to the comment section under the task, progress indication - small checkbox for done/not done condition)
 - pagination for tasks per page - user can personally select how much
 - authentication
 
-How to start(on the PyCharm IDE example):
+# How to start(on the PyCharm IDE example):
 
 1) Create new project via VCS and use link to this repository
 
@@ -19,7 +19,7 @@ How to start(on the PyCharm IDE example):
 
 4) Just in case set ./FirstDjangoProject as a root folder
 
-How to use:
+# How to use:
 
 To enter venv use
 
@@ -29,4 +29,4 @@ To run application use
 
 > cd ./FirstDjangoProject
 > python manage.py runserver
-# что-то
+
