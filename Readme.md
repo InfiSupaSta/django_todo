@@ -1,7 +1,7 @@
 Small Django project for educational purposes.
 
 1. [Implemented things](#Implemented-things)
-2. [How to start](#How-to-start)
+2. [How to start](#How-to-start(on-the-PyCharm-IDE-example)
 3. [How to use](#How-to-use)
 
 
@@ -18,7 +18,7 @@ Small Django project for educational purposes.
 
 2) Create a venv via settings
 
-3) Install requirements (if it not installed automatically use in terminal
+3) Install requirements (if it not installed automatically use in terminal command below)
 
 > pip install requirements.txt
 
