@@ -1,7 +1,7 @@
 Small Django project for educational purposes.
 
 1. [Implemented things](#Implemented-things)
-2. [How to start](#How-to-start-(-on-the-PyCharm-IDE-example-)
+2. [How to start](#How-to-start-on-the-PyCharm-IDE-example)
 3. [How to use](#How-to-use)
 
 
@@ -10,7 +10,7 @@ Small Django project for educational purposes.
 - pagination for tasks per page - user can personally select how much
 - authentication
 
-# How to start(on the PyCharm IDE example):
+# How to start on the PyCharm IDE example:
 
 1) Create new project via VCS and use link to this repository
 
