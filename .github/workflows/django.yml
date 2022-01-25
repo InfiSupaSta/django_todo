@@ -28,5 +28,5 @@ jobs:
         
     - name: Run Tests
       run: |
-        
+        cd ..
         python manage.py test
