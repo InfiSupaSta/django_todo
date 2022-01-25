@@ -28,7 +28,7 @@ jobs:
         
     - name: Run Tests
       run: |
-        dir
+        pwd
         cp ./smthfortest/templates/smthfortest/*.html smthfortest/
         cd ./smthfortest/
         ls
