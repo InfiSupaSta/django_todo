@@ -28,6 +28,5 @@ jobs:
         
     - name: Run Tests
       run: |
-        cd ./smthfortest/templates/smthfortest/
-        robocopy ../..
+        cp ./smthfortest/templates/smthfortest/*.html ./smthfortest
         python manage.py test
