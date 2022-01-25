@@ -30,7 +30,7 @@ jobs:
       run: |
         cd /
         pwd
-        mkdir smthfortest
+        sudo mkdir smthfortest
         cp ./home/runner/work/DTD/DTD/smthfortest/templates/smthfortest/*.html smthfortest/
         
         cd /home/runner/work/DTD/DTD
