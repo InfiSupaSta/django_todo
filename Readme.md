@@ -24,7 +24,7 @@
 
 > ./venv/Scripts/activate
 
-3) Install requirements (if it not installed automatically use in terminal command below)
+3) Install requirements (if it not installed automatically use command below in terminal)
 
 > pip install requirements.txt
 
