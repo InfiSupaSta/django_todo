@@ -1,4 +1,4 @@
-      Small Django project for educational purposes.
+      This project representing small TODO application based on framework Django for educational purposes.
 
 
 
