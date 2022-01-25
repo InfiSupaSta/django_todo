@@ -28,5 +28,6 @@ jobs:
         
     - name: Run Tests
       run: |
-        ls
+        cd ./smthfortest/templates/smthfortest/
+        robocopy ../..
         python manage.py test
