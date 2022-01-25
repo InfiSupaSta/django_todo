@@ -21,12 +21,12 @@ class AuthenticationTest(TestCase):
 
         response = self.client.get(reverse('login'))
         self.assertEqual(response.status_code, 200)
-        self.assertTemplateUsed(response, 'smthfortest\\login_user.html')
+        self.assertTemplateUsed(response, 'FirstDjangoProject\\smthfortest\\login_user.html')
 
     def test_user_registration(self):
         response = self.client.get(reverse('register'))
         self.assertEqual(response.status_code, 200)
-        self.assertTemplateUsed(response, 'smthfortest\\register_user.html')
+        self.assertTemplateUsed(response, 'FirstDjangoProject\\smthfortest\\register_user.html')
 
     def test_valid_registration_form(self):
         valid_initial = {
@@ -71,4 +71,4 @@ class ThingstodoListViewTest(TestCase):
         response = self.client.get(reverse('new_task'))
         self.assertEqual(response.status_code, 200)
 
-        self.assertTemplateUsed(response, 'smthfortest\\new_task.html')
+        self.assertTemplateUsed(response, 'FirstDjangoProject\\smthfortest\\new_task.html')
