@@ -20,7 +20,9 @@
 
 > https://github.com/InfiSupaSta/Django-TODO-List.git
 
-2) Create a venv via settings
+2) Create a venv via settings and activate it using
+
+> ./venv/Scripts/activate
 
 3) Install requirements (if it not installed automatically use in terminal command below)
 
@@ -30,11 +32,7 @@
 
 # How to use:
 
-To enter venv use
-
-> ./venv/Scripts/activate
-
-To run application use
+For fully starting Django application use
 
 > cd ./FirstDjangoProject
 
