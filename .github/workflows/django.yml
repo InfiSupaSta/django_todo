@@ -29,4 +29,4 @@ jobs:
     - name: Run Tests
       run: |
         
-        python ./FirstDjangoProject/manage.py test
+        python manage.py test
