@@ -28,9 +28,10 @@ jobs:
         
     - name: Run Tests
       run: |
+        cd /
         pwd
-        cp ./smthfortest/templates/smthfortest/*.html smthfortest/
-        cd ./smthfortest/
-        ls
-        cd ..
+        cp ./home/runner/work/DTD/DTD/smthfortest/templates/smthfortest/*.html smthfortest/
+        
+        cd /home/runner/work/DTD/DTD
+        pwd
         python manage.py test
