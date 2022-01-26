@@ -115,7 +115,7 @@ def new_task(request):
 
             return TaskCreationStatus.create_task_fail(request)
 
-    return render(request, 'smthfortest\\new_task.html', context=context)
+    return render(request, 'smthfortest\\templates\\smthfortest\\new_task.html', context=context)
 
 
 def get_page_not_found(request, exception):
@@ -220,7 +220,7 @@ def change_task(request, pk):
 
 class UserRegistration(DataMixin, CreateView):
     form_class = UserRegistrationForm
-    template_name = 'smthfortest\\register_user.html'
+    template_name = 'smthfortest\\templates\\smthfortest\\register_user.html'
     success_url = reverse_lazy('login')
 
     def get_context_data(self, *, object_list=None, **kwargs):
@@ -232,7 +232,7 @@ class UserRegistration(DataMixin, CreateView):
 
 class UserLogIn(DataMixin, LoginView):
     form_class = AuthenticationForm
-    template_name = 'smthfortest\\login_user.html'
+    template_name = 'smthfortest\\templates\\smthfortest\\login_user.html'
     success_url = reverse_lazy('home')
 
     def get_context_data(self, *, object_list=None, **kwargs):
