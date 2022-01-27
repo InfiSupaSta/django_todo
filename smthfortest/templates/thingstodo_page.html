@@ -1,0 +1,84 @@
+{% extends 'smthfortest/base_template.html' %}
+
+{% block info_about %}
+<form method="get" class = "paginate_by">
+    <strong> <br>---------<br></strong>
+    Создано задач: <strong>{{amount_of_tasks_created_by_user}}</strong>.
+    Выполнено задач: <strong>{{tasks_done}}</strong>.
+    Количество отображаемых задач на странице: <strong>{{ paginate_by }}</strong>.<br>
+    Для изменения количества задач на странице введите новое значение и сохраните. {{ form.tasks_per_page }}
+    <input type="submit" value="Сохранить"><br>
+    <strong> ---------<br></strong>
+</form>
+<p class="current">Уже запланированные задачи:</p>
+
+{% endblock info_about %}
+
+{% block content %}
+
+
+{% for item in object_list %}
+
+    {% if item.title|truncatewords:1|length > 25 %}
+        <p class="task_name"> {{ item.title|truncatechars:25 }} </p>
+
+    {% elif item.title|truncatewords:1|length <= 25 %}
+        <p class="task_name"> {{ item.title }} </p>
+
+    {% endif %}
+
+    <div class="pagewithtasks">
+
+        <p class="in_pagewithtasks"><i>Описание</i>: <strong>{{ item.description }}</strong> </p>
+        <p class="in_pagewithtasks"><i>Время создания</i>: {{ item.creation_time }}
+
+        {% if item.creation_time != item.time_updated %}
+
+            <br><i>Время изменения</i>: {{ item.time_updated }}
+
+        {% endif %}
+        </p>
+        <p class="in_pagewithtasks done">
+
+            <i>Выполнена ли задача?</i>
+
+            {% if item.done == False %}
+                <b class="no"> НЕТ! </b>
+
+            {% endif %}
+
+            {% if item.done %}
+                <b class="yes"> ДА! </b>
+
+            {% endif %}
+
+        </p>
+
+        {% for key, value in latest_comments.items %}
+
+            {% if key == item.id %}
+                <hr class="bottom">
+                    <i>Описание задачи было изменено, прошлая версия описания:</i>
+                    <p class="latest"> "{{ value.comment_text }}" </p>
+                <hr class="bottom">
+
+            {% endif %}
+
+        {% endfor %}
+
+        <a href='{{ item.get_absolute_url_for_change }}' class='testing'> Изменить описание </a>
+        <a href='{{ item.get_absolute_url_for_delete }}' class='testing'> Удалить задачу </a>
+
+    </div>
+
+{% endfor %}
+
+<div class="pagination">
+    {% for page_number in amount_of_pages %}
+        {% if amount_of_pages|length == 1 %}
+        {% else %}
+       <a href = '?page={{page_number}}' class="pag"> {{ page_number }} </a>
+        {% endif %}
+    {% endfor %}
+</div>
+{% endblock content %}

@@ -1,0 +1,34 @@
+{% extends 'smthfortest/base_template.html' %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>{{ title }}</title>
+</head>
+<body>
+{% block info_about %}
+<br><i>Вы находитесь на странице изменения описания/выполнения существующей записи.
+   <br>Измените данные полей в форме ниже и нажмите кнопку "Сохранить".</i>
+{% endblock info_about %}
+
+
+{% block content %}
+<form method="POST">
+    {% csrf_token %}
+
+
+<!--    {{ form.title }}<br>-->
+    <strong><p class="task_name"> {{ current_task.title }} <br></p></strong>
+    {{ form.description }}<br>
+    <p> Выполнена ли задача? {{ form.done }} </p>
+<!--    <br> {{ form_to_change_task.comment_text }}-->
+
+    <button type="submit"> Сохранить изменения </button>
+
+</form>
+{% endblock content %}
+
+
+
+</body>
+</html>

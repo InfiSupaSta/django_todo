@@ -28,9 +28,5 @@ jobs:
         
     - name: Run Tests
       run: |
-        ls
-        cp ./smthfortest/templates/smthfortest/*.html smthfortest/
-        cd ./smthfortest/
-        ls
-        cd ..
+
         python manage.py test

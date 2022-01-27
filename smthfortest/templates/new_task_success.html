@@ -1,0 +1,19 @@
+{% extends 'smthfortest/base_template.html' %}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title> {{ title }} </title>
+</head>
+<body>
+
+{% block info_about %}
+
+    <h2> Задача "<i>{{ request.POST.title }}</i>" успешно добавлена в TODO лист. Успехов в выполнении!</h2>
+
+{% endblock info_about %}
+
+
+</body>
+</html>

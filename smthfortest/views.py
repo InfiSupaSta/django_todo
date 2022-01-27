@@ -15,7 +15,7 @@ from .utils import menu
 
 
 class MainPage(DataMixin, TemplateView):
-    template_name = 'smthfortest\\base_template.html'
+    template_name = 'smthfortest/base_template.html'
 
 
     def get_context_data(self, *, object_list=None, **kwargs):
@@ -30,7 +30,7 @@ class ThingsTodoView(DataMixin, ListView):
     paginate_by = 1
 
     model = TodoList
-    template_name = 'smthfortest\\thingstodo_page.html'
+    template_name = 'smthfortest/thingstodo_page.html'
 
     queryset_len = None
 
@@ -115,7 +115,7 @@ def new_task(request):
 
             return TaskCreationStatus.create_task_fail(request)
 
-    return render(request, 'smthfortest\\new_task.html', context=context)
+    return render(request, 'smthfortest/new_task.html', context=context)
 
 
 def get_page_not_found(request, exception):
@@ -132,7 +132,7 @@ class TaskCreationStatus:
         }
 
         return render(request,
-                      r'smthfortest\\new_task_success.html',
+                      r'smthfortest/new_task_success.html',
                       context=context
                       )
 
@@ -157,14 +157,14 @@ class TaskCreationStatus:
         }
 
         return render(request,
-                      r'smthfortest\\new_task_fail.html',
+                      r'smthfortest/new_task_fail.html',
                       context=context
                       )
 
 
 class DeleteTask(DataMixin, DetailView):
     model = TodoList
-    template_name = 'smthfortest\\delete_task.html'
+    template_name = 'smthfortest/delete_task.html'
 
     def get_context_data(self, *, object_list=None, **kwargs):
         context = super().get_context_data(**kwargs)
@@ -215,12 +215,12 @@ def change_task(request, pk):
         'current_task': current_task
     }
 
-    return render(request, r'smthfortest\\change_task.html', context)
+    return render(request, r'smthfortest/change_task.html', context)
 
 
 class UserRegistration(DataMixin, CreateView):
     form_class = UserRegistrationForm
-    template_name = 'smthfortest\\register_user.html'
+    template_name = 'smthfortest/register_user.html'
     success_url = reverse_lazy('login')
 
     def get_context_data(self, *, object_list=None, **kwargs):
@@ -232,7 +232,7 @@ class UserRegistration(DataMixin, CreateView):
 
 class UserLogIn(DataMixin, LoginView):
     form_class = AuthenticationForm
-    template_name = 'smthfortest\\login_user.html'
+    template_name = 'smthfortest/login_user.html'
     success_url = reverse_lazy('home')
 
     def get_context_data(self, *, object_list=None, **kwargs):
