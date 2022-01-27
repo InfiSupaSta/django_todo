@@ -31,7 +31,7 @@ jobs:
         cd /
         pwd
         sudo mkdir smthfortest
-        sudo cp ./home/runner/work/DTD/DTD/smthfortest/templates/smthfortest/*.html smthfortest/
+        sudo cp ./home/runner/work/DTD/DTD/smthfortest/templates/smthfortest/*.html smthfortest/templates
         
         cd /home/runner/work/DTD/DTD
         pwd
