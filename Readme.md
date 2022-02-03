@@ -9,11 +9,10 @@
 
 
 # Implemented things:
-- task creating (title, description)
-- task editing (description - after change previous version of description is moving to the comment section under the 
-- task, progress indication - small checkbox for done/not done condition)
-- pagination for tasks per page - user can personally select how much
-- authentication
+- Task creating (title, description)
+- Task editing (description - after change previous version of description is moving to the comment section under the task, progress indication - small checkbox for done/not done condition)
+- Pagination for tasks per page - user can personally select how much
+- Authentication
 - DjangoDebugToolbar and integration with OpenWeatherAPI (info for weather/wind/city is obtaining via yandex services, internet connection is required, more info in [How to use](#How-to-use))
 
 # How to start on the PyCharm IDE example:
