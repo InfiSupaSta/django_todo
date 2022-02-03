@@ -46,7 +46,7 @@ margin-right: auto;
 .wrapper{
 display: flex;
 flex-direction: column;
-height: 93vh;
+height: 90vh;
 }
 .content{
 flex: 1 0 auto;
@@ -274,6 +274,7 @@ float: left;
 
 .hello{
 margin: auto;
+margin-top: 5px;
 font-family: Bradley Hand, cursive;
 font-size: 30px;
 }

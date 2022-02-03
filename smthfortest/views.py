@@ -8,7 +8,8 @@ from django.shortcuts import render, redirect
 from django.urls import reverse_lazy
 from django.views.generic import ListView, DetailView, TemplateView, CreateView
 
-from smthfortest.forms import TodoListForm, TodoListChangeForm, TasksPerPage, UserRegistrationForm, UserLogInForm
+import smthfortest.utils
+from smthfortest.forms import TodoListForm, TodoListChangeForm, TasksPerPage, UserRegistrationForm
 from smthfortest.models import TodoList, Comment, TaskOnPageAmount
 from .utils import DataMixin
 from .utils import menu
@@ -93,7 +94,8 @@ def new_task(request):
     context = {
         'title': menu[2]['title'],
         'form': form,
-        'menu': menu
+        'menu': menu,
+        'weather_data': smthfortest.utils.get_weather_data()
     }
 
     if request.method == 'POST':

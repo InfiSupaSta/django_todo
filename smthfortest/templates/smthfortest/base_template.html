@@ -7,9 +7,19 @@
     <link type="text/css" href="{% static 'smthfortest/css/styles.css' %}" rel="stylesheet"/>
 
 </head>
+<p class="hello">
 {% if request.user.is_authenticated %}
-<p class="hello">В данный момент вы находитесь на аккаунте пользователя {{ user.username }}!</p>
-        {% endif %}
+    В данный момент вы находитесь на аккаунте пользователя <strong>{{ user.username }}</strong>!<br>
+{% endif %}
+
+{% for item in weather_data.items %}
+    {% if not forloop.last %}
+        {{ item.1 }} |
+    {% else %}
+        {{ item.1 }}
+    {% endif %}
+{% endfor %}
+</p>
 <body>
 
 <div class="wrapper">
@@ -83,7 +93,8 @@
             <p class="opportunities">- создание задач (название - должно быть уникальным, описание, индикация выполнения задачи)<br>
             - редактирование описания и выполнения задачи (при изменении описания прошлая его версия будет показана в комментарии к текущей задаче)<br>
             - пагинация (по умолчанию отображается 1 задача на странице, но пользователем вручную может быть указано количество задач на странице)<br>
-            - регистрация и авторизация</p>
+            - регистрация и авторизация<br>
+            - интегрированы DjangoDebugToolbar & OpenWeatherAPI</p>
 
 
     {% endblock info_about %}
