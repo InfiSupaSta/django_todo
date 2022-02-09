@@ -1,5 +1,5 @@
 from .models import TodoList
-from weather_info import *
+from weather_info import weather
 
 menu = [
 
@@ -8,6 +8,13 @@ menu = [
     {'title': 'Новая задача', 'url_name': 'new_task'},
 
 ]
+
+bad_words = ('ойляля', 'весьвбороде')
+
+
+def searching_bad_words(key_name: str, list_of_words: list[str]):
+    bad_words_list = [(key_name, word) for (index, word) in enumerate(list_of_words) if word in bad_words]
+    return key_name, bad_words_list
 
 
 def get_weather_data():

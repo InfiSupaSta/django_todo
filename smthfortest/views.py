@@ -11,8 +11,8 @@ from django.views.generic import ListView, DetailView, TemplateView, CreateView
 import smthfortest.utils
 from smthfortest.forms import TodoListForm, TodoListChangeForm, TasksPerPage, UserRegistrationForm
 from smthfortest.models import TodoList, Comment, TaskOnPageAmount
-from .utils import DataMixin
-from .utils import menu
+from .utils import DataMixin, menu
+from smthfortest.utils import searching_bad_words
 
 
 class MainPage(DataMixin, TemplateView):
@@ -80,7 +80,6 @@ class ThingsTodoView(DataMixin, ListView):
 
         # try:
         self.paginate_by = TaskOnPageAmount.objects.get(task_on_page_bound_user_id=self.request.user.id).amount
-
         # dunno what kind of exceptions can be here
         # except Exception as e:
         #     return redirect('home', context={'exception': e})
@@ -101,19 +100,37 @@ def new_task(request):
     if request.method == 'POST':
 
         request_form = TodoListForm(request.POST)
-        if request_form.is_valid() and not TodoList.objects.filter(title__exact=f'{request.POST.get("title")}',
-                                                                   bound_user=request.user.id):
+
+        fields_to_check = {
+            'title': 'Название',
+            'description': 'Описание'
+        }
+
+        title_words = searching_bad_words(fields_to_check['title'],
+                                          request_form.data['title'].strip().lower().split(' '))
+        description_words = searching_bad_words(fields_to_check['description'],
+                                                request_form.data['description'].strip().lower().split(' '))
+        unexpected_context = {'info': []}
+
+        for item in (title_words, description_words):
+            if item[1]:
+                unexpected_context['info'] += item[1]
+
+        if unexpected_context['info']:
+            return TaskCreationStatus.create_task_with_bad_words(request, context=unexpected_context)
+
+        if request_form.is_valid() \
+                and not TodoList.objects.filter(title__exact=f'{request.POST.get("title")}',
+                                                bound_user=request.user.id):
 
             try:
-
                 request_form.save()
                 return TaskCreationStatus.create_task_success(request)
 
             except IntegrityError:
-
                 return redirect('home')
-        else:
 
+        else:
             return TaskCreationStatus.create_task_fail(request)
 
     return render(request, 'smthfortest/new_task.html', context=context)
@@ -126,10 +143,28 @@ def get_page_not_found(request, exception):
 class TaskCreationStatus:
 
     @staticmethod
+    def create_task_with_bad_words(request, **kwargs):
+        form = TodoListForm()
+
+        context = {
+            'title': 'Недопустимые слова!',
+            'menu': menu,
+            'form': form,
+            'place': kwargs['context']['info'],
+            'weather_data': smthfortest.utils.get_weather_data()
+        }
+
+        return render(request,
+                      r'smthfortest/new_task_bad_words.html',
+                      context=context
+                      )
+
+    @staticmethod
     def create_task_success(request):
         context = {
             'title': 'Задача создана!',
-            'menu': menu
+            'menu': menu,
+            'weather_data': smthfortest.utils.get_weather_data()
         }
 
         return render(request,
@@ -154,7 +189,8 @@ class TaskCreationStatus:
         context = {
             'title': 'Новая задача',
             'menu': menu,
-            'form': form
+            'form': form,
+            'weather_data': smthfortest.utils.get_weather_data()
         }
 
         return render(request,

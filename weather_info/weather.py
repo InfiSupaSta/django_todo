@@ -1,8 +1,9 @@
 import sys
-
-import requests
 import json
 from datetime import datetime
+
+import requests
+
 from weather_info.local_settings import api_key_for_weather
 from weather_info.get_region import get_region_from_response, yandex_url
 

@@ -1,0 +1,32 @@
+{% extends 'smthfortest/base_template.html' %}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title> {{ title }} </title>
+</head>
+<body>
+
+{% block info_about %}
+
+    <h2> Задача не добавлена в TODO лист: недопустимые слова в названии / описании </h2>
+{% for item in place %}
+- "{{ item.1 }}" в поле "<strong>{{ item.0 }}</strong>" <br>
+{% endfor %}
+
+{% endblock info_about %}
+
+{% block content %}
+
+<form method="POST">
+    {% csrf_token %}
+    <br>{{ form.title }} <br><br>
+    {{ form.description }} <br>
+
+    <button type="submit"> Сохранить запись в базу данных </button>
+</form>
+
+{% endblock content %}
+</body>
+</html>
