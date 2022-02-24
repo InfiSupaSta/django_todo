@@ -265,7 +265,7 @@ class UserRegistration(DataMixin, CreateView):
     def post(self, request, *args, **kwargs):
         if request.method == 'POST':
             print(request.POST.get('email'))
-
+        # realize logic here
         return super().post(request, *args, **kwargs)
 
 
