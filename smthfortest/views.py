@@ -252,6 +252,9 @@ def change_task(request, pk):
     return render(request, r'smthfortest/change_task.html', context)
 
 
+from django.core.mail import send_mail
+
+
 class UserRegistration(DataMixin, CreateView):
     form_class = UserRegistrationForm
     template_name = 'smthfortest/register_user.html'
@@ -264,8 +267,19 @@ class UserRegistration(DataMixin, CreateView):
 
     def post(self, request, *args, **kwargs):
         if request.method == 'POST':
-            print(request.POST.get('email'))
-        # realize logic here
+            subject = 'Thanks for registration on the GODLY To-Do App!'
+            recipient_list = [request.POST.get('email')]
+            message = f'''
+                    Thanks for the registration, {request.POST.get('username')}!
+                    Happy tasks finishing!
+                    
+                    Your login: {request.POST.get('username')}
+                    Your password: {request.POST.get('password1')}        
+                    '''
+            from_email = "DjangoTestEmailSending@gmail.com"
+
+            send_mail(subject, message, from_email, recipient_list, fail_silently=False)
+
         return super().post(request, *args, **kwargs)
 
 

@@ -1,15 +1,22 @@
 import sys
 import json
+from configparser import RawConfigParser
 from datetime import datetime
 
 import requests
 
-from weather_info.local_settings import api_key_for_weather
 from weather_info.get_region import get_region_from_response, yandex_url
 
 
+def get_config_data(section: str, option: str):
+    config = RawConfigParser()
+    config.read('local_settings.ini')
+    return config.get(section, option)
+
+
 def get_absolute_url(city_name=get_region_from_response(yandex_url)):
-    return f'http://api.openweathermap.org/data/2.5/weather?q={city_name}&appid={api_key_for_weather}&lang=ru'
+    # return f'http://api.openweathermap.org/data/2.5/weather?q={city_name}&appid={api_key_for_weather}&lang=ru'
+    return f'http://api.openweathermap.org/data/2.5/weather?q={city_name}&appid={get_config_data("secret", "api_key_for_weather")}&lang=ru'
 
 
 def response_into_json(weather_api_url):
