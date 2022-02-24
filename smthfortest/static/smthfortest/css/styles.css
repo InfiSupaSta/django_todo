@@ -83,6 +83,7 @@ height: 100%;
     border-radius: 15px 100px 15px 100px;
     background-color: white;
     padding-bottom: 20px;
+    padding-top: 20px;
 }
 
 .task_name {

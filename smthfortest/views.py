@@ -3,7 +3,7 @@ from django.contrib.auth import logout
 from django.contrib.auth.forms import AuthenticationForm
 from django.contrib.auth.views import LoginView
 from django.db import IntegrityError
-from django.http import HttpResponseNotFound
+from django.http import HttpResponseNotFound, HttpResponseRedirect
 from django.shortcuts import render, redirect
 from django.urls import reverse_lazy
 from django.views.generic import ListView, DetailView, TemplateView, CreateView
@@ -11,7 +11,7 @@ from django.views.generic import ListView, DetailView, TemplateView, CreateView
 import smthfortest.utils
 from smthfortest.forms import TodoListForm, TodoListChangeForm, TasksPerPage, UserRegistrationForm
 from smthfortest.models import TodoList, Comment, TaskOnPageAmount
-from .utils import DataMixin, menu
+from .utils import DataMixin, menu, making_unexpected_context
 from smthfortest.utils import searching_bad_words
 
 
@@ -106,18 +106,15 @@ def new_task(request):
             'description': 'Описание'
         }
 
+        # part of code to find swearing words in description / title of task
         title_words = searching_bad_words(fields_to_check['title'],
                                           request_form.data['title'].strip().lower().split(' '))
         description_words = searching_bad_words(fields_to_check['description'],
                                                 request_form.data['description'].strip().lower().split(' '))
-        unexpected_context = {'info': []}
-
-        for item in (title_words, description_words):
-            if item[1]:
-                unexpected_context['info'] += item[1]
-
-        if unexpected_context['info']:
-            return TaskCreationStatus.create_task_with_bad_words(request, context=unexpected_context)
+        if making_unexpected_context(title_words, description_words) is not None:
+            return TaskCreationStatus.create_task_with_bad_words(request,
+                                                                 context=making_unexpected_context(title_words,
+                                                                                                   description_words))
 
         if request_form.is_valid() \
                 and not TodoList.objects.filter(title__exact=f'{request.POST.get("title")}',
@@ -263,8 +260,13 @@ class UserRegistration(DataMixin, CreateView):
     def get_context_data(self, *, object_list=None, **kwargs):
         context = super().get_context_data(**kwargs)
         datamixin_context = self.get_user_context(title='Регистрация')
-
         return context | datamixin_context
+
+    def post(self, request, *args, **kwargs):
+        if request.method == 'POST':
+            print(request.POST.get('email'))
+
+        return super().post(request, *args, **kwargs)
 
 
 class UserLogIn(DataMixin, LoginView):

@@ -30,15 +30,15 @@
 
         {% if not request.user.is_authenticated %}
             {% for item in menu|slice:'1' %}
-            {% if title == 'О проекте' %}
+                {% if title == 'О проекте' %}
 
-                    <a class="chosen">{{ item.title }}</a>
+                        <a class="chosen">{{ item.title }}</a>
 
-            {% else %}
+                {% else %}
 
-                    <a href=" {% url item.url_name %} " >{{ item.title }}</a>
+                        <a href=" {% url item.url_name %} " >{{ item.title }}</a>
 
-            {% endif %}
+                {% endif %}
             {% endfor %}
 
         {% elif request.user.is_authenticated %}

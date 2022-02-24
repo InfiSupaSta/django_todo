@@ -13,8 +13,18 @@ bad_words = ('ойляля', 'весьвбороде')
 
 
 def searching_bad_words(key_name: str, list_of_words: list[str]):
-    bad_words_list = [(key_name, word) for (index, word) in enumerate(list_of_words) if word in bad_words]
+    bad_words_list = [(key_name, word) for word in list_of_words if word in bad_words]
     return key_name, bad_words_list
+
+
+def making_unexpected_context(*args):
+    unexpected_context = {'info': []}
+
+    for (form_field, words) in args:
+        if words:
+            unexpected_context['info'] += words
+    if unexpected_context['info']:
+        return unexpected_context
 
 
 def get_weather_data():
