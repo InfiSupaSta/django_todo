@@ -14,6 +14,7 @@ from smthfortest.forms import TodoListForm, TodoListChangeForm, TasksPerPage, Us
 from smthfortest.models import TodoList, Comment, TaskOnPageAmount
 from smthfortest.utils import searching_bad_words
 from .utils import DataMixin, menu, making_unexpected_context
+from django.core.mail import send_mail
 
 
 class MainPage(DataMixin, TemplateView):
@@ -117,9 +118,8 @@ def new_task(request):
                                                                  context=making_unexpected_context(title_words,
                                                                                                    description_words))
 
-        if request_form.is_valid() \
-                and not TodoList.objects.filter(title__exact=f'{request.POST.get("title")}',
-                                                bound_user=request.user.id):
+        if not TodoList.objects.filter(title__exact=f'{request.POST.get("title")}',
+                                       bound_user=request.user.id):
 
             try:
                 request_form.save()
@@ -178,13 +178,13 @@ class TaskCreationStatus:
         Информация (если она введена)  в поле 'описание задачи' сохраняется
         """
 
-        info = {
-            'description': request.POST.get('description'),
+        data = {
             'title': request.POST.get('title'),
-            'bound_user': request.user.id
+            'bound_user': request.user.id,
+            'description': request.POST.get('description')
         }
 
-        form = TodoListForm(info)
+        form = TodoListForm(data)
 
         context = {
             'title': 'Новая задача',
@@ -193,10 +193,10 @@ class TaskCreationStatus:
             'weather_data': smthfortest.utils.get_weather_data()
         }
 
-        if form.is_valid() and form.is_bound and not form.errors:
+        if not TodoList.objects.filter(title__exact=f'{request.POST.get("title")}',
+                                       bound_user=request.user.id):
             form.save()
             return TaskCreationStatus.create_task_success(request)
-
         return render(request,
                       r'smthfortest/new_task_fail.html',
                       context=context
@@ -257,9 +257,6 @@ def change_task(request, pk):
     }
 
     return render(request, r'smthfortest/change_task.html', context)
-
-
-from django.core.mail import send_mail
 
 
 class UserRegistration(DataMixin, CreateView):

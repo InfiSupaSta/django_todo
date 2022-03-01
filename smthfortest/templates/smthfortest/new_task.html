@@ -9,6 +9,7 @@
 <body>
     {% block info_about %}
     <br><br>Введи название задачи и её описание в форму,<br> представленную ниже:
+
     {% endblock info_about %}
 
 
@@ -19,6 +20,7 @@
     <br>{{ form.title }} <br><br>
     {{ form.description }} <br>
     {{ form.bound_user }}
+
     <button type="submit"> Сохранить задачу </button>
 </form>
 
