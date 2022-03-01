@@ -17,11 +17,9 @@
     {% csrf_token %}
 
 
-<!--    {{ form.title }}<br>-->
     <strong><p class="task_name"> {{ current_task.title }} <br></p></strong>
     {{ form.description }}<br>
     <p> Выполнена ли задача? {{ form.done }} </p>
-<!--    <br> {{ form_to_change_task.comment_text }}-->
 
     <button type="submit"> Сохранить изменения </button>
 

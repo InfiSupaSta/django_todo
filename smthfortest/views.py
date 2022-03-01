@@ -1,9 +1,10 @@
 from math import ceil
+
 from django.contrib.auth import logout
 from django.contrib.auth.forms import AuthenticationForm
 from django.contrib.auth.views import LoginView
 from django.db import IntegrityError
-from django.http import HttpResponseNotFound, HttpResponseRedirect
+from django.http import HttpResponseNotFound
 from django.shortcuts import render, redirect
 from django.urls import reverse_lazy
 from django.views.generic import ListView, DetailView, TemplateView, CreateView
@@ -11,8 +12,8 @@ from django.views.generic import ListView, DetailView, TemplateView, CreateView
 import smthfortest.utils
 from smthfortest.forms import TodoListForm, TodoListChangeForm, TasksPerPage, UserRegistrationForm
 from smthfortest.models import TodoList, Comment, TaskOnPageAmount
-from .utils import DataMixin, menu, making_unexpected_context
 from smthfortest.utils import searching_bad_words
+from .utils import DataMixin, menu, making_unexpected_context
 
 
 class MainPage(DataMixin, TemplateView):

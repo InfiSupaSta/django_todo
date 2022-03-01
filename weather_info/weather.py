@@ -15,7 +15,6 @@ def get_config_data(section: str, option: str):
 
 
 def get_absolute_url(city_name=get_region_from_response(yandex_url)):
-    # return f'http://api.openweathermap.org/data/2.5/weather?q={city_name}&appid={api_key_for_weather}&lang=ru'
     return f'http://api.openweathermap.org/data/2.5/weather?q={city_name}&appid={get_config_data("secret", "api_key_for_weather")}&lang=ru'
 
 
@@ -43,9 +42,3 @@ def extracting_weather_data(dict_with_data):
         sys.stderr.write(f'Unexpected error happened: {e}\n')
     finally:
         return useful_info
-
-
-if __name__ == '__main__':
-    url_with_city = get_absolute_url()
-    json_data = response_into_json(url_with_city)
-    print(extracting_weather_data(json_data))

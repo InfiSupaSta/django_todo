@@ -1,5 +1,3 @@
-from configparser import RawConfigParser
-
 from weather_info import weather
 from .models import TodoList
 
