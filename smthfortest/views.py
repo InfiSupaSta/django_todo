@@ -178,11 +178,13 @@ class TaskCreationStatus:
         Информация (если она введена)  в поле 'описание задачи' сохраняется
         """
 
-        data = {
-            'description': request.POST.get('description')
+        info = {
+            'description': request.POST.get('description'),
+            'title': request.POST.get('title'),
+            'bound_user': request.user.id
         }
 
-        form = TodoListForm(initial=data)
+        form = TodoListForm(info)
 
         context = {
             'title': 'Новая задача',
@@ -190,6 +192,10 @@ class TaskCreationStatus:
             'form': form,
             'weather_data': smthfortest.utils.get_weather_data()
         }
+
+        if form.is_valid() and form.is_bound and not form.errors:
+            form.save()
+            return TaskCreationStatus.create_task_success(request)
 
         return render(request,
                       r'smthfortest/new_task_fail.html',

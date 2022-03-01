@@ -11,7 +11,7 @@
 {% block info_about %}
 
     <h2> Задача с названием "<i>{{ request.POST.title }}</i>" уже существует, введите другое название. </h2>
-    {{ if_title_exists }}
+
 {% endblock info_about %}
 
 {% block content %}
@@ -21,6 +21,9 @@
     <br>{{ form.title }} <br><br>
     {{ form.description }} <br>
 
+    {% for error in form.non_field_errors %}
+        {{error}}
+    {% endfor %}
     <button type="submit"> Сохранить запись в базу данных </button>
 </form>
 
