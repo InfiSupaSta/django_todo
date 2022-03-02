@@ -9,13 +9,12 @@
 
 
 # Implemented things:
-- Task creating (title, description)
-- Task editing - description and progress indication(description - after change previous version of description is moving to the comment section under the task, progress indication - small checkbox for done/not done condition)
+- Tasks CRUD system. Opportunity to edit description and progress indication(description - after change previous version of description is moving to the comment section under the task, progress indication - small checkbox for done/not done condition)
 - Pagination for tasks per page - user can personally select how much
 - Authentication
-- DjangoDebugToolbar and integration with OpenWeatherAPI (info for weather/wind/city is obtaining via yandex services, internet connection is required, more info in [How to use](#How-to-use))
+- Integration with OpenWeatherAPI (info for weather/wind/city is obtaining via yandex services, internet connection is required, more info in [How to use](#How-to-use))
 
-# How to start on the PyCharm IDE example:
+# How to start on the PyCharm IDE & Windows example:
 
 1) Create new project via VCS and use link to this repository
 
@@ -36,7 +35,7 @@ Create a new user through terminal for fully access to application
 
 > python manage.py createsuperuser
 
-For fully starting Django application use
+To get started use command below and click on the link in terminal
 
 > python manage.py runserver
 
