@@ -27,7 +27,6 @@ def response_into_json(weather_api_url):
 def extracting_weather_data(dict_with_data):
     absolute_zero = - 273.15
     now = datetime.now()
-
     useful_info = {
         'Дата': f'{now.strftime("%Y")} {now.strftime("%b")} {now.strftime("%d")}',
         'Время': f'{now.strftime("%H:%M")}'}
@@ -39,6 +38,9 @@ def extracting_weather_data(dict_with_data):
             'Скорость ветра': f"{dict_with_data.get('wind', '').get('speed', '')} м/с"
         })
     except Exception as e:
-        sys.stderr.write(f'Unexpected error happened: {e}\n')
+        sys.stderr.write(f'''\nModule: {__name__}\nUnexpected error happened: {e}
+{dict_with_data.get("message", "Probably trouble with the API key")}
+''')
+        pass
     finally:
         return useful_info

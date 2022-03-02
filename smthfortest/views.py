@@ -90,7 +90,7 @@ class ThingsTodoView(DataMixin, ListView):
 
 
 def new_task(request):
-    form = TodoListForm(initial={'bound_user': request.user.id})
+    form = TodoListForm()
 
     context = {
         'title': menu[2]['title'],
@@ -101,8 +101,13 @@ def new_task(request):
 
     if request.method == 'POST':
 
-        request_form = TodoListForm(request.POST)
+        data = {
+            'title': request.POST.get('title'),
+            'bound_user': request.user.id,
+            'description': request.POST.get('description')
+        }
 
+        request_form = TodoListForm(data)
         fields_to_check = {
             'title': 'Название',
             'description': 'Описание'
@@ -113,17 +118,16 @@ def new_task(request):
                                           request_form.data['title'].strip().lower().split(' '))
         description_words = searching_bad_words(fields_to_check['description'],
                                                 request_form.data['description'].strip().lower().split(' '))
-        if making_unexpected_context(title_words, description_words) is not None:
-            return TaskCreationStatus.create_task_with_bad_words(request,
-                                                                 context=making_unexpected_context(title_words,
-                                                                                                   description_words))
+        words_found = making_unexpected_context(title_words, description_words)
+        if words_found is not None:
+            return TaskCreationStatus.create_task_with_bad_words(request, context=words_found)
 
-        if not TodoList.objects.filter(title__exact=f'{request.POST.get("title")}',
-                                       bound_user=request.user.id):
-
+        if not TodoList.objects.filter(title__exact=data.get('title'),
+                                       bound_user=data.get('bound_user')):
             try:
-                request_form.save()
-                return TaskCreationStatus.create_task_success(request)
+                if request_form.is_valid():
+                    request_form.save()
+                    return TaskCreationStatus.create_task_success(request)
 
             except IntegrityError:
                 return redirect('home')
@@ -179,8 +183,6 @@ class TaskCreationStatus:
         """
 
         data = {
-            'title': request.POST.get('title'),
-            'bound_user': request.user.id,
             'description': request.POST.get('description')
         }
 
@@ -192,11 +194,11 @@ class TaskCreationStatus:
             'form': form,
             'weather_data': smthfortest.utils.get_weather_data()
         }
-
         if not TodoList.objects.filter(title__exact=f'{request.POST.get("title")}',
                                        bound_user=request.user.id):
-            form.save()
-            return TaskCreationStatus.create_task_success(request)
+            if form.is_valid():
+                form.save()
+                return TaskCreationStatus.create_task_success(request)
         return render(request,
                       r'smthfortest/new_task_fail.html',
                       context=context
@@ -241,7 +243,6 @@ def change_task(request, pk):
 
                 return redirect('thingstodo')
 
-        # if 'title' or 'done' in request_form.changed_data:
         if 'done' in request_form.changed_data:
             if request_form.is_valid():
                 request_form.save()
