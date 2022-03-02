@@ -17,7 +17,6 @@ from configparser import RawConfigParser
 BASE_DIR = Path(__file__).resolve().parent.parent
 
 config = RawConfigParser()
-directory_with_settings = Path(__file__).resolve().parent
 config.read('local_settings.ini')
 
 # Quick-start development settings - unsuitable for production

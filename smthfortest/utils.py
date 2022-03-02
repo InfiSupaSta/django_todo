@@ -12,7 +12,7 @@ menu = [
 bad_words = ('ойляля', 'весьвбороде')
 
 
-def searching_bad_words(key_name: str, list_of_words: list[str]):
+def searching_bad_words(key_name: str, list_of_words: list[str]) -> tuple[str, list]:
     bad_words_list = [(key_name, word) for word in list_of_words if word in bad_words]
     return key_name, bad_words_list
 
