@@ -31,12 +31,13 @@
 
 # How to use:
 
-Create a new user through terminal for fully access to application
+Create a new user through terminal(or on the registration page after runserver command) for fully access to application
 
 > python manage.py createsuperuser
 
-To get started use command below and click on the link in terminal
+To get started use commands below and click on the link in terminal
 
+> python manage.py migrate  
 > python manage.py runserver
 
 If weather is not displayed for some reason there can be a several ways to fix it:
@@ -44,3 +45,4 @@ If weather is not displayed for some reason there can be a several ways to fix i
 - Make sure you are registered on https://openweathermap.org/ and pasted the api_key into the file 'local_settings.ini' in section [secret] into variable 'api_key_for_weather'
 - Region for getting info is obtaining via yandex services (you can find code for it in weather_info/get_region.py) and if script can not get your destination it automatically will set as 'Novosibirsk'. So if service can not get info about region and you still want to see weather info in a specific place just set second argument "default" of a function "get_region_from_response" in get_region.py to a required CITY.
 
+Also here is realised opportunity to send emails to a new user with login data after registration - all you need is uncomment function 'post' in smthfortest.views.UserRegistration and fill [email] section of local_settings.ini with your email data you want to send from.

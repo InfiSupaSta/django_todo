@@ -270,22 +270,22 @@ class UserRegistration(DataMixin, CreateView):
         datamixin_context = self.get_user_context(title='Регистрация')
         return context | datamixin_context
 
-    def post(self, request, *args, **kwargs):
-        if request.method == 'POST':
-            subject = 'Thanks for registration on the GODLY To-Do App!'
-            recipient_list = [request.POST.get('email')]
-            message = f'''
-                    Thanks for the registration, {request.POST.get('username')}!
-                    Happy tasks finishing!
-                    
-                    Your login: {request.POST.get('username')}
-                    Your password: {request.POST.get('password1')}        
-                    '''
-            from_email = "DjangoTestEmailSending@gmail.com"
-
-            send_mail(subject, message, from_email, recipient_list, fail_silently=False)
-
-        return super().post(request, *args, **kwargs)
+    # def post(self, request, *args, **kwargs):
+    #     if request.method == 'POST':
+    #         subject = 'Thanks for registration on the GODLY To-Do App!'
+    #         recipient_list = [request.POST.get('email')]
+    #         message = f'''
+    #                 Thanks for the registration, {request.POST.get('username')}!
+    #                 Happy tasks finishing!
+    #
+    #                 Your login: {request.POST.get('username')}
+    #                 Your password: {request.POST.get('password1')}
+    #                 '''
+    #         from_email = "put_some_email_here@gmail.com"
+    #
+    #         send_mail(subject, message, from_email, recipient_list, fail_silently=False)
+    #
+    #     return super().post(request, *args, **kwargs)
 
 
 class UserLogIn(DataMixin, LoginView):

@@ -1,6 +1,5 @@
 .idea/
 .venv/
-.local_settings.py
 .db.sqlite3
 local_settings.ini
 smthfortest/migrations/0*.py
